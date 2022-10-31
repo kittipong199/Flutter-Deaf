@@ -1,5 +1,5 @@
 
-import 'package:app_deaf/pages/navbar.dart';
+
 import 'package:flutter/material.dart';
 
 class HomaPage extends StatefulWidget {
@@ -41,12 +41,15 @@ class _HomaPageState extends State<HomaPage> {
               ElevatedButton(
                  style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF277BC0) ,
+                shape: const StadiumBorder(),
+                
                 
                 minimumSize: Size(120,50), // background
                 
                 // foreground
                   ),
                 onPressed: () {},
+                
                child: Text('เริ่มเรียน',style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),))
               
               
