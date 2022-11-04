@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 class CouresPage extends StatefulWidget {
   const CouresPage({super.key});
 
@@ -35,11 +35,14 @@ class _CouresPageState extends State<CouresPage> {
             
             
             child: ListTile(
+              tileColor: Color(0xFFFFB200),
               // leading: CircleAvatar(
               //   backgroundColor: Colors.blue
                title: Center(
+              
               child: Text(
-              listcoures[index],
+              listcoures[index], style: TextStyle(fontSize: 35,color: Color.fromARGB(255, 0, 0, 0)),
+              //style: GoogleFonts.aBeeZee(textStyle:TextStyle(fontSize: 30,color: Color.fromARGB(255, 0, 0, 0)), )
               
             ),
               ),
