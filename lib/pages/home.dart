@@ -51,9 +51,6 @@ class _HomaPageState extends State<HomaPage> {
                 onPressed: () {},
                 
                child: Text('เริ่มเรียน',style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),))
-              
-              
-               
             ],
            
           ),

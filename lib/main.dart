@@ -2,8 +2,13 @@ import 'package:app_deaf/pages/home.dart';
 import 'package:app_deaf/pages/login.dart';
 import 'package:app_deaf/pages/navbar.dart';
 import 'package:app_deaf/pages/coures.dart';
+import 'package:app_deaf/pages/test%20_core.dart';
+import 'package:app_deaf/pages/CoresApi.dart';
+import 'package:app_deaf/pages/video_content.dart';
 
 import 'package:flutter/material.dart';
+
+
 
 void main() {
   runApp(const MyApp());
@@ -29,7 +34,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: NavbarPage(),
+      home: VideoContentPage(),
     );
   }
 }
