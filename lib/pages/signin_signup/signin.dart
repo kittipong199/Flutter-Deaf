@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:developer';
 
-import 'package:app_deaf/service/couresApi.dart';
+// import 'package:app_deaf/service/couresApi.dart';
 import 'package:app_deaf/themes/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -14,11 +16,37 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  final TextEditingController textUsernameController = TextEditingController();
-  final TextEditingController textPasswordController = TextEditingController();
+  final TextEditingController user_name = TextEditingController();
+  final TextEditingController passwords = TextEditingController();
+
+  Future<void> inserrecord() async {
+    // String jsondata =
+    //     '{"user_name":"${user_name.text}", "passwors":"${passwords.text}"}';
+    if (user_name.text != "" || passwords.text != "") {
+      try {
+        var url =
+            Uri.http("10.0.2.2",'/phpapi/registoruser.php', {'q': '{http}'});
+        var res = await http.post(url,
+            body: {"user_name": user_name.text.toString(), "passwords": passwords.text.toString()});
+
+        var data = jsonDecode(res.body);
+        if (data["success"] == "ture") {
+          print("Record Inserted");
+          user_name.text = "";
+          passwords.text = "";
+        } else {
+          print("some isssue");
+        }
+      } catch (e) {
+        print(e);
+      }
+    } else {
+      print("Please fill all file");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-   
     return SafeArea(
         child: Scaffold(
       backgroundColor: Color(0xFFFFD218),
@@ -29,10 +57,10 @@ class _SignInPageState extends State<SignInPage> {
               child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // username
+              // user_name
               TextFormField(
-                controller: textUsernameController,
-                decoration: const InputDecoration(
+                controller: user_name,
+                decoration: InputDecoration(
                   prefixIcon: Icon(
                     Icons.account_circle,
                   ),
@@ -49,8 +77,8 @@ class _SignInPageState extends State<SignInPage> {
               /// Password
               Container(
                 child: TextFormField(
-                  controller: textPasswordController,
-                  decoration: const InputDecoration(
+                  controller: passwords,
+                  decoration: InputDecoration(
                     prefixIcon: Icon(
                       Icons.password,
                     ),
@@ -68,7 +96,9 @@ class _SignInPageState extends State<SignInPage> {
               /// Buttom
               ///
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  inserrecord();
+                },
                 child: const Text("Login"),
               ),
             ],

@@ -3,6 +3,7 @@ import 'package:app_deaf/pages/history.dart';
 import 'package:app_deaf/pages/home/home.dart';
 import 'package:app_deaf/pages/coures.dart';
 import 'package:app_deaf/pages/proflie.dart';
+import 'package:app_deaf/routers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -24,14 +25,7 @@ class _NavbarPageState extends State<NavbarPage> {
           init: AppController(),
           builder: (controller) {
             return Scaffold(
-              // appBar: AppBar(
-              //   title: const Text('E-Commerce'),
-              //   actions: const [
-              //     // if loged in, we can add the cart icon here
-              //     // if not login show login button here
-              //     // CartIconButton()
-              //   ],
-              // ),
+             
               body: IndexedStack(
                 index: currentIndex,
                 children: const [
@@ -57,6 +51,7 @@ class _NavbarPageState extends State<NavbarPage> {
                   setState(() {
                     currentIndex = value;
                   });
+                 
                 }),
                 /////////////////////
 

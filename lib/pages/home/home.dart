@@ -1,4 +1,5 @@
-
+import 'package:app_deaf/routers.dart';
+import 'package:app_deaf/routers.dart';
 
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,7 @@ class HomaPage extends StatefulWidget {
 }
 
 class _HomaPageState extends State<HomaPage> {
+ 
   int navindex = 0;
   @override
   Widget build(BuildContext context) {
@@ -17,55 +19,61 @@ class _HomaPageState extends State<HomaPage> {
       // backgroundColor: Color(0xFFFFB200),
       appBar: AppBar(
         backgroundColor: Color(0xFFFFB200),
-        title: Text("หน้าแรก"),
-        
+        title: Text("หน้าแรก", style: TextStyle(color: Colors.black),),
       ),
 
       body: Center(
         child: Container(
-          
-          // btn เริ่มเรียน
           child: Column(
-            mainAxisSize:MainAxisSize.min,
+             mainAxisSize: MainAxisSize.min,
             children: [
-             
+              IndexedStack(
+              // Center(
+              //   child: Container(
+                 
+              //     child: Column(
+              //       mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // image logo
+                      CircleAvatar(
+                        radius: 75,
+                        foregroundImage: AssetImage('assets/images/logo.jpg'),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
 
-              // image logo
+                      //  btn เริ่มเรียน
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF277BC0),
+                            shape: const StadiumBorder(),
 
-              CircleAvatar(
-                radius: 75,
-                foregroundImage: AssetImage('assets/images/logo.jpg'),
-              ),
-              SizedBox(height: 20,),
-              //  btn เริ่มเรียน 
-              ElevatedButton(
-                 style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF277BC0) ,
-                shape: const StadiumBorder(),
-                
-                
-                minimumSize: Size(120,50), // background
-                
-                // foreground
+                            minimumSize: Size(120, 50), // background
+
+                            // foreground
+                          ),
+                          onPressed: _handleCilkCoure,
+                          child: Text(
+                            'เริ่มเรียน',
+                            style:
+                                TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.black),
+                          ),
+                          
+                          )
+                    ],
                   ),
-                onPressed: () {},
-                
-               child: Text('เริ่มเรียน',style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),))
             ],
-           
           ),
-          
-       
-        
-        
-        
-      ),
         ),
-      
+      ),
+        
       
     );
- 
   }
   
-
+  void _handleCilkCoure() {
+     Navigator.pushNamed(context, AppRoute.coure);
+      // Navigator.pushNamed(context, AppRoute.navbars);
+  }
 }

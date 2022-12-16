@@ -8,7 +8,8 @@ class ProfliePage extends StatelessWidget {
     return Scaffold(
       //appBar
       appBar: AppBar(
-        title: Text("โปรไฟล์"),
+        title: Text("โปรไฟล์",
+        style: TextStyle(color: Colors.black),),
         backgroundColor:  Color(0xFFFFB200),
         
         elevation: 1,

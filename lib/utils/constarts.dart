@@ -1,1 +1,2 @@
-const baseURLAPI = "http://10.0.2.2:8000/api/";
+//const baseURLAPI = "http://localhost:8000/api";
+const phpApi = "http://10.0.2.2/phpapi";
