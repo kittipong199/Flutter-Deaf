@@ -43,6 +43,7 @@ dependencies:
   http: ^0.13.5
   get: ^4.6.5
   animation_search_bar: ^0.0.9
+  dio: ^4.0.6
 
 
 dev_dependencies:
