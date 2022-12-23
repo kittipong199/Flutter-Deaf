@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: AppRoute.all,
-      home: SignInPage(),
+      home: NavbarPage(),
       navigatorKey: navigatorState,
     );
   }
