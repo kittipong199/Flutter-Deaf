@@ -1,6 +1,6 @@
 
 
-import 'package:app_deaf/controller/app_controller.dart';
+import 'package:app_deaf/utils/app_controller.dart';
 import 'package:get/get.dart';
 
 

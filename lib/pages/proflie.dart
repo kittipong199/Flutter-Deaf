@@ -72,12 +72,13 @@ class _ProfliePageState extends State<ProfliePage> {
                               offset: Offset(0, 10))
                         ],
                         shape: BoxShape.circle,
-                        image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: file == null ? AssetImage('assets/images/logo.jpg') : Image.file(file)
+                        // image: DecorationImage(
+                        //     fit: BoxFit.cover,
+                        //     image: file == null ? AssetImage('assets/images/logo.jpg') : Image.file(file)
                            
                             
-                            )),
+                        //     )
+                        ),
                   ),
 
                   //bottom change image and edit

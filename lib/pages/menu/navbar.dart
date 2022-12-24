@@ -1,4 +1,4 @@
-import 'package:app_deaf/controller/app_controller.dart';
+import 'package:app_deaf/utils/app_controller.dart';
 import 'package:app_deaf/pages/history.dart';
 import 'package:app_deaf/pages/home/home.dart';
 import 'package:app_deaf/pages/coures.dart';
@@ -28,7 +28,7 @@ class _NavbarPageState extends State<NavbarPage> {
              
               body: IndexedStack(
                 index: currentIndex,
-                children: const [
+                children:  [
                   // สำหรับ แสดง หน้าต่างๆ
                   HomaPage(),
                   CouresPage(),

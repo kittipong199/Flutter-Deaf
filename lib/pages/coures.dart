@@ -38,29 +38,29 @@ class _CouresPageState extends State<CouresPage> {
 
     return Scaffold(
       //appbar
-       appBar: PreferredSize(
-        preferredSize: const Size(double.infinity, 65),
-        child: SafeArea(
-          child: Container(
-            decoration: const BoxDecoration(
-                color: Color(0xFFFFB200),
-                boxShadow: [
-                  BoxShadow(
-                      color: Color.fromARGB(255, 247, 244, 244),
-                      blurRadius: 5,
-                      spreadRadius: 0,
-                      offset: Offset(0, 5))
-                ]),
-            alignment: Alignment.center,
-            child: AnimationSearchBar(
-                backIconColor: Colors.black,
-                centerTitle: 'หมวดหมู่',
-                onChanged: (text) => debugPrint(text),
-                searchTextEditingController: controller,
-                horizontalPadding: 5),
-          ),
-        ),
-      ),
+      //  appBar: PreferredSize(
+      //   preferredSize: const Size(double.infinity, 65),
+      //   child: SafeArea(
+      //     child: Container(
+      //       decoration: const BoxDecoration(
+      //           color: Color(0xFFFFB200),
+      //           boxShadow: [
+      //             BoxShadow(
+      //                 color: Color.fromARGB(255, 247, 244, 244),
+      //                 blurRadius: 5,
+      //                 spreadRadius: 0,
+      //                 offset: Offset(0, 5))
+      //           ]),
+      //       alignment: Alignment.center,
+      //       child: AnimationSearchBar(
+      //           backIconColor: Colors.black,
+      //           centerTitle: 'หมวดหมู่',
+      //           onChanged: (text) => debugPrint(text),
+      //           searchTextEditingController: controller,
+      //           horizontalPadding: 5),
+      //     ),
+      //   ),
+      // ),
       // body listview
       body: FutureBuilder<List<Coures>>(
           future: futureCoures,
