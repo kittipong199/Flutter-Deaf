@@ -1,3 +1,4 @@
+import 'package:app_deaf/models/signinModel.dart';
 import 'package:app_deaf/utils/app_controller.dart';
 import 'package:app_deaf/pages/history.dart';
 import 'package:app_deaf/pages/home/home.dart';
@@ -48,7 +49,7 @@ class _NavbarPageState extends State<NavbarPage> {
                 // code for change wiggle in navbar
                 currentIndex: currentIndex,
                 onTap: ((value) {
-                  setState(() {
+                  setState(() { 
                     currentIndex = value;
                   });
                  

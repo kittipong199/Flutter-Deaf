@@ -9,28 +9,14 @@ import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart' as dio;
 
 class SigninApi {
-  _setHeaders() =>
-      {'Content-type': 'application/json', 'Accept': 'application/json'};
-  // register user
+ 
 
-  //   getData(data, apiURL) async {
+  static Future<List<LoginModel>> futureSigninApi() async {
 
-  //   var fullURL = phpApi + apiURL;
-  //   return await http.get(Uri.parse(fullURL),
+    String ursl = 'https://www.androidthai.in.th/fluttertraining/getUserWhereUser.php?isAdd=true&user_name=1&passwords=2';
+    final response = await http.get(Uri.parse(ursl));
 
-  //     // body: jsonEncode(data),
-  //     // headers: _setHeaders()
-  //   );
-
-  // }
-
-  static Future<List<LoginModel>> futureSigninApi(data) async {
-    final response = await http.get(Uri.parse(phpApi + '/loginuser.php'));
-
-    // if (response.statusCode == 200) {
-    //   late bool datas = false;
-    //   return datas = true;
-    // }
+  
     if (response.statusCode == 200) {
       //pares data
 

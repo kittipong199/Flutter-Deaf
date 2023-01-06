@@ -1,3 +1,4 @@
+import 'package:app_deaf/pages/question/quiz.dart';
 import 'package:app_deaf/routers.dart';
 
 import 'package:app_deaf/pages/menu/navbar.dart';

@@ -24,7 +24,7 @@ class AppRoute {
   static const navbars = 'navbar';
   static const home = 'home';
   static const coure = 'coures';
-  static const contents = 'contents';
+  //static const contents = 'contents';
   static const content_video = 'content_video';
   static const signin = 'signin';
   static const signup = 'signup';
@@ -33,7 +33,7 @@ class AppRoute {
         navbars: (context) => const NavbarPage(),
         home: (context) => const HomaPage(),
         coure:(context) => const CouresPage(),
-        contents:(context) => const ContentPage(),
+        //contents:(context) => const ContentPage(),
         content_video:(context) => const VideoContentPage(),
         signin:(context) => const SignInPage(),
         signup:(context) => const SignUpPage(),

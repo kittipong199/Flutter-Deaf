@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 
+import 'package:app_deaf/pages/content.dart';
 import 'package:app_deaf/routers.dart';
 import 'package:flutter/material.dart';
 import 'package:app_deaf/models/Coures.dart';
@@ -9,6 +10,7 @@ import 'package:app_deaf/models/Coures.dart';
 import 'package:app_deaf/service/couresApi.dart' show CouresApi;
 
 import 'package:animation_search_bar/animation_search_bar.dart';
+import 'package:get/get.dart';
 
 import 'dart:convert' as convert;
 
@@ -75,7 +77,10 @@ class _CouresPageState extends State<CouresPage> {
                       color: Color(0xFFFFB200),
                       child: InkWell(
                         // กดไปหน้า content
-                        onTap: _handleCilkContent,
+                        onTap: () {
+                          _handleCilkContent(coures: snapshot.data![index]);
+                        },
+                        // แสดงผล รายการ คอร์ส
                         child: Padding(
                           padding: const EdgeInsets.all(20.6),
                           child: Column(
@@ -94,8 +99,13 @@ class _CouresPageState extends State<CouresPage> {
           }),
     );
   }
-   void _handleCilkContent() {
-     Navigator.pushNamed(context, AppRoute.contents);
-      // Navigator.pushNamed(context, AppRoute.navbars);
+
+  void _handleCilkContent({required Coures coures}) {
+    //
+    print(" at _handClickContent == > ${coures.toJson()}");
+
+    Get.to(ContentPage(couresModel: coures,));
+    //  Navigator.pushNamed(context, AppRoute.contents);
+    // Navigator.pushNamed(context, AppRoute.navbars);
   }
 }

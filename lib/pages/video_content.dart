@@ -18,13 +18,16 @@ class _VideoContentPageState extends State<VideoContentPage> {
   @override
   void initState() {
     super.initState();
-    futureContent = ContentsApi.futureContentApi();
+   // futureContent = ContentsApi.futureContentApi();
     loadVideoPlayer();
   }
 
 
   loadVideoPlayer(){
-     controller = VideoPlayerController.network('https://github.com/stephangopaul/video_samples/blob/master/gb.mp4');
+
+
+     controller = VideoPlayerController.network('https://streamable.com/4dw5qq');
+
       // controller = VideoPlayerController.asset('');
      controller.addListener(() {
         setState(() {});

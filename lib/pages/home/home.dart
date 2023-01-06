@@ -33,7 +33,7 @@ class _HomaPageState extends State<HomaPage> {
                   : null,
               backgroundColor: Color(0xFFFFB200),
               title: Text(
-                appController.startLearn.value ? 'เริ่มเรียน' : "หน้าแรก",
+                appController.startLearn.value ? 'หัวข้อเรียน' : "หน้าแรก",
                 style: TextStyle(color: Colors.black),
               ),
             ),

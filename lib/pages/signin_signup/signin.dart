@@ -1,20 +1,24 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 import 'dart:developer';
 
 // import 'package:app_deaf/service/couresApi.dart';
 import 'package:app_deaf/models/signinModel.dart';
+import 'package:app_deaf/pages/menu/navbar.dart';
 import 'package:app_deaf/routers.dart';
 import 'package:app_deaf/service/signUpApi.dart';
 import 'package:app_deaf/service/singinApi.dart';
 import 'package:app_deaf/themes/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
 
 import 'package:dio/dio.dart';
 
 class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+  const SignInPage({super.key}) ;
+
 
   @override
   State<SignInPage> createState() => _SignInPageState();
@@ -27,42 +31,13 @@ class _SignInPageState extends State<SignInPage> {
   late TextEditingController user_name = TextEditingController();
   late TextEditingController passwords = TextEditingController();
   FocusNode myFocusNode = FocusNode();
-  
+
   Future<List<LoginModel>>? futureSignin;
   @override
   void initState() {
     super.initState();
     // futureSignin = SigninApi.futureSigninApi();
-    
   }
-
-  // Future<void> inserrecord() async {
-  //   // String jsondata =
-  //   //     '{"user_name":"${user_name.text}", "passwors":"${passwords.text}"}';
-  //   if (user_name.text != "" || passwords.text != "") {
-  //     try {
-  //       var url =
-  //           Uri.http("10.0.2.2", '/phpapi/registoruser.php', {'q': '{http}'});
-  //       var res = await http.post(url, body: {
-  //         "user_name": user_name.text.toString(),
-  //         "passwords": passwords.text.toString()
-  //       });
-
-  //       var data = jsonDecode(res.body);
-  //       if (data["success"] == "ture") {
-  //         print("Record Inserted");
-  //         user_name.text = "";
-  //         passwords.text = "";
-  //       } else {
-  //         print("some isssue");
-  //       }
-  //     } catch (e) {
-  //       print(e);
-  //     }
-  //   } else {
-  //     print("Please fill all file");
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +146,6 @@ class _SignInPageState extends State<SignInPage> {
 
                               if (pass) {
                                 postRegister();
- 
                               }
                             }, // เมื่อกดปุ่ม ให้เรียกใช้ postRegister
 
@@ -198,7 +172,9 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   void _toHome() {
-    Navigator.pushNamed(context, AppRoute.navbars);
+    // print(" at NavBar ==> ${loginModel.toJson()}");
+    // Get.to(NavbarPage(loginModel: loginModel));
+    // Navigator.pushNamed(context, AppRoute.navbars);
     // Navigator.pushNamed(context, AppRoute.navbars);
   }
 
@@ -214,8 +190,8 @@ class _SignInPageState extends State<SignInPage> {
 
     passwords.text = "";
     //Call API
-    var response = await SigninApi.futureSigninApi(formData);
-         // sent data and link api to file Service SignUpApi
+    var response = await SigninApi.futureSigninApi();
+    // sent data and link api to file Service SignUpApi
     print(formData);
     // print(response.data.toString());
     // var body = json.decode(response.body);

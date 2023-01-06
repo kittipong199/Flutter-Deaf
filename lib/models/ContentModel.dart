@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // To parse this JSON data, do
 //
 //     final contentModel = contentModelFromJson(jsonString);
@@ -43,4 +44,32 @@ class ContentModel {
         "image": image == null ? null : image,
         "content_text": contentText,
     };
+
+  
+
+ 
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'coureId': coureId,
+      'contentname': contentname,
+      'video': video,
+      'image': image,
+      'contentText': contentText,
+    };
+  }
+
+  factory ContentModel.fromMap(Map<String, dynamic> map) {
+    return ContentModel(
+      id: (map['id'] ?? '') as String,
+      coureId: (map['coureId'] ?? '') as String,
+      contentname: (map['contentname'] ?? '') as String,
+      video: (map['video'] ?? '') as String,
+      image: (map['image'] ?? '') as String,
+      contentText: (map['contentText'] ?? '') as String,
+    );
+  }
+
+ 
 }
