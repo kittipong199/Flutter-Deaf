@@ -1,4 +1,5 @@
 import 'package:app_deaf/pages/question/quiz.dart';
+import 'package:app_deaf/pages/signin_signup/signin.dart';
 import 'package:app_deaf/routers.dart';
 
 import 'package:app_deaf/pages/menu/navbar.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       routes: AppRoute.all,
-      home: NavbarPage(),
+      home: SignInPage(),
       navigatorKey: navigatorState,
       theme:  ThemeData(primarySwatch: Colors.orange,
       appBarTheme: AppBarTheme(backgroundColor: AppConstart.bgColor)),

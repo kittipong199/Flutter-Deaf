@@ -14,11 +14,11 @@ import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
 
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' as dioApi hide FormData;
+import 'package:dio/src/form_data.dart' as dioFormdata;
 
 class SignInPage extends StatefulWidget {
-  const SignInPage({super.key}) ;
-
+  const SignInPage({super.key});
 
   @override
   State<SignInPage> createState() => _SignInPageState();
@@ -30,6 +30,7 @@ class _SignInPageState extends State<SignInPage> {
   // String user_name ,passwords;
   late TextEditingController user_name = TextEditingController();
   late TextEditingController passwords = TextEditingController();
+
   FocusNode myFocusNode = FocusNode();
 
   Future<List<LoginModel>>? futureSignin;
@@ -144,9 +145,8 @@ class _SignInPageState extends State<SignInPage> {
                             onPressed: () {
                               bool pass = formkey.currentState!.validate();
 
-                              if (pass) {
-                                postRegister();
-                              }
+                              _login();
+                              // _toHome();
                             }, // เมื่อกดปุ่ม ให้เรียกใช้ postRegister
 
                             child: const Text(
@@ -174,28 +174,73 @@ class _SignInPageState extends State<SignInPage> {
   void _toHome() {
     // print(" at NavBar ==> ${loginModel.toJson()}");
     // Get.to(NavbarPage(loginModel: loginModel));
-    // Navigator.pushNamed(context, AppRoute.navbars);
+    Navigator.pushNamed(context, AppRoute.navbars);
     // Navigator.pushNamed(context, AppRoute.navbars);
   }
 
-  //  function send data to service api
-  void postRegister() async {
-    // เก็บ ข้อมูลจาก TextFormfield เป็น array
-    var formData = {
+  void _login() async {
+    var dio = dioApi.Dio();
+
+    // ignore: unused_local_variable
+    var urls = "http://10.0.2.2/deafapp/phpapi/getUserWhereUser.php?isAdd=true&user_name=${user_name.text}&passwords=${passwords.text}";
+   
+    //var urls = "http://10.0.2.2/deafapp/phpapi/loginuser.php";
+
+    dioFormdata.FormData formdata = dioFormdata.FormData.fromMap({
       'user_name': user_name.text,
       'passwords': passwords.text,
-    };
+    });
+    user_name.text;
+    passwords.text;
 
-    user_name.text = "";
+    var response = await dio.post(urls, data: formdata);
+    // response.obs.firstRebuild คือ การแปลง ข้อมูล ให้อยู่ในรูปแบบ ของ bool ทำให้
+    var bodys = json.decode(response.data);
+ 
+  
+    print(response);
 
-    passwords.text = "";
-    //Call API
-    var response = await SigninApi.futureSigninApi();
-    // sent data and link api to file Service SignUpApi
-    print(formData);
-    // print(response.data.toString());
-    // var body = json.decode(response.body);
-    // print(body);
-    // myFocusNode.requestFocus();
+    print(bodys["Success"]);
+    print(bodys.runtimeType);
+
+    //print(response.data.toString());
+
+    if (bodys["Success"] == "true") {
+          print("ok pass");
+       Navigator.pushReplacementNamed(context, AppRoute.navbars);
+    } else {
+      print("ยังเขียนไม่ถูกหาวิธ๊ใหม่");
+    }
+    //print(data.toString());
   }
+
+
 }
+
+
+//  function send data to service api
+// void _login() async {
+//   // เก็บ ข้อมูลจาก TextFormfield เป็น array
+//   var formUserData = {
+//     'user_name': user_name.text,
+//     'passwords': passwords.text,
+//   };
+
+//   user_name.text = "";
+
+//   passwords.text = "";
+//   //Call API
+//   var response = await SigninApi().postData(formUserData, '/signin.php');
+//   print(formUserData);
+//   print(response.data.toString());
+//   // sent data and link api to file Service SignUpApi
+
+//   var body = json.decode(response.body);
+//   print(body);
+
+//   if (body['status']) {
+//     print('login success');
+//   } else {
+//     print('login fail');
+//   }
+// }

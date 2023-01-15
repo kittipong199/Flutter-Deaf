@@ -67,8 +67,8 @@ class _ContentPageState extends State<ContentPage> {
       if (contentModels.isNotEmpty) {
         searchContentModels.addAll(contentModels);
       }
-      print(
-          'ขนาด searchContentModel --> ${searchContentModels.length}, haveData --> $haveData');
+      print('ขนาด searchContentModel --> ${searchContentModels.length}, haveData --> $haveData');
+          
       load = false;
       setState(() {});
     });
@@ -216,6 +216,7 @@ class Debouncer {
     this.voidCallback,
   });
 
+// สั่งเล่น Video และ ให้หยุดเล่นเมื่อกดกลับ
   run(VoidCallback voidCallback) {
     if (timer != null) {
       timer!.cancel();

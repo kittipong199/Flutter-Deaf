@@ -10,7 +10,7 @@ import 'package:dio/dio.dart' as dio;
 
 class SigninApi {
  
-
+// อันเก่า
   static Future<List<LoginModel>> futureSigninApi() async {
 
     String ursl = 'https://www.androidthai.in.th/fluttertraining/getUserWhereUser.php?isAdd=true&user_name=1&passwords=2';
@@ -27,4 +27,22 @@ class SigninApi {
       throw Exception('Unexpected error occured!');
     }
   }
+  // อันใหม่
+  // _setHeaders() =>{
+  //   'Content-type': 'application/json',
+  //   'Accept': 'application/json'
+  // };
+  //   // register user 
+
+  //   postLogin(apiURL) async {
+
+  //      var fullURL = phpApi + apiURL;
+  //   return await http.post(Uri.parse(fullURL),
+     
+      
+  //     headers: _setHeaders()
+  //   );
+
+  // }
+
 }

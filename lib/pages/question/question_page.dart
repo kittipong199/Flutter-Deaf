@@ -1,15 +1,18 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 import 'dart:ffi';
+import 'dart:math';
 
 import 'package:app_deaf/models/answerModel.dart';
 import 'package:app_deaf/models/question_Model.dart';
+import 'package:app_deaf/pages/video_quiz.dart';
 import 'package:app_deaf/utils/app_constarts.dart';
 import 'package:app_deaf/widget/widget_image_youtube.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app_deaf/models/Coures.dart';
+import 'package:get/get.dart';
 
 class QuestionPage extends StatefulWidget {
   const QuestionPage({
@@ -28,14 +31,18 @@ class _QuestionPageState extends State<QuestionPage> {
   bool load = true;
   bool? haveData;
 
-  bool? test;
   var questionModels = <QuestionModel>[];
 
   var listAnswerModels = <List<AnswerModel>>[];
-
+  var AnswersList = <List>[];
   var corrects = <int?>[];
 
+  var trueCorrects = <int>[];
+
   var listCorrectBool = <List<bool>>[];
+
+  var random = Random();
+
   @override
   void initState() {
     super.initState();
@@ -64,6 +71,8 @@ class _QuestionPageState extends State<QuestionPage> {
 
           var correctBool = <bool>[];
 
+          int indexTrue = 0;
+
           String urlApiAnswer =
               'https://www.androidthai.in.th/fluttertraining/getAnswerWhereIdQuestionId.php?isAdd=true&question_id=${model.id}';
 
@@ -72,6 +81,11 @@ class _QuestionPageState extends State<QuestionPage> {
               AnswerModel answerModel = AnswerModel.fromMap(element);
               answerModels.add(answerModel);
               correctBool.add(false);
+
+              if (answerModel.correct.isNotEmpty) {
+                trueCorrects.add(indexTrue);
+              }
+              indexTrue++;
             }
           });
 
@@ -81,58 +95,116 @@ class _QuestionPageState extends State<QuestionPage> {
           corrects.add(null);
         }
       }
-
+      print('trueCorrects ---> $trueCorrects');
       setState(() {});
     });
   }
-
+  
   @override
   Widget build(BuildContext context) {
+    //  listAnswerModels.shuffle();
     return Scaffold(
+      
       appBar: AppBar(
         title: Text('ข้อสอบ${couresModel!.couresname}'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              bool status = true;
+              print('corrects --> $corrects');
+              print('truecorrects --> $trueCorrects');
+              for (var element in corrects) {
+                if (element == null) {
+                  status = false;
+                }
+              }
+
+              if (status) {
+                int score = 0;
+                for (var i = 0; i < corrects.length; i++) {
+                  if (corrects[i] == trueCorrects[i]) {
+                    score++;
+                  }
+                }
+                Get.snackbar('Score: $questionModels.',  '$score คะแนน',
+                    snackPosition: SnackPosition.BOTTOM);
+              } else {
+                print('ตอบไม่ครบ');
+                Get.snackbar('ทำไม่ครบ', 'กรุณาทำใหม่ให้ครบ ข้อ',
+                    snackPosition: SnackPosition.BOTTOM);
+              }
+            },
+            icon: const Icon(Icons.send_outlined),
+          )
+        ],
       ),
       body: load
           ? Center(child: CircularProgressIndicator())
           : haveData!
               ? ListView.builder(
+                
                   itemCount: questionModels.length,
                   itemBuilder: (context, index) => Column(
                     children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            (index + 1).toString(),
-                            style: AppConstart().h1Style(),
+                      Card(
+                        color: Color(0xFFFFB200),
+                        
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Container(
+                            child: Row(
+                              
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              
+                              children: [
+                                
+                                Text(
+                                  (index + 1).toString(),
+                                  style: AppConstart().h1Style(),
+                                ),
+                                contentQuestion(index).marginOnly(right: 10,left: 20),
+                                
+                              ],
+                            ),
                           ),
-                          contentQuestion(index),
-                        ],
+                        ),
                       ),
                       // Text('question ==. ${questionModels[index].id}')
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const ScrollPhysics(),
-                        itemCount: listAnswerModels[index].length,
-                        itemBuilder: (context, index2) => RadioListTile(
-                          value: index2,
-                          groupValue: corrects[index],
-                          onChanged: (value) {
-                            corrects[index] = value!;
 
-                            print('value is ${corrects}');
-                            setState(() {});
-                          },
-                          title: listAnswerModels[index][index2]
-                                  .answerText
-                                  .isNotEmpty
-                              ? Text(listAnswerModels[index][index2].answerText)
-                              : WidgetImageYoutube(
-                                  urlYoutube: listAnswerModels[index][index2]
-                                      .answerVideo,
-                                  width: 100,
-                                  height: 70,
-                                ),
+
+                      Card(
+                        
+                        color: Color.fromARGB(255, 108, 184, 158),
+                        child: Container(
+                        
+                          child: ListView.builder(
+                            
+                            shrinkWrap: true,
+                            physics: const ScrollPhysics(),
+                            // กำหนดให้ คำตอบมี มากสุดได้ 4 ข้อ
+                            itemCount: listAnswerModels[index].length = 4 ,
+                           
+                            itemBuilder: (context, index2) => RadioListTile(
+                              value: index2,
+                              groupValue: corrects[index],
+                              onChanged: (value) {
+                                corrects[index] = value!;
+                      
+                                print('value is ${corrects}');
+                                setState(() {});
+                              },
+                              title: listAnswerModels[index][index2]
+                                      .answerText
+                                      .isNotEmpty
+                                  ? Text(listAnswerModels[index][index2].answerText,textAlign: TextAlign.start,)
+                                  : WidgetImageYoutube(
+                                      urlYoutube: listAnswerModels[index][index2]
+                                          .answerVideo,
+                                      width: 100,
+                                      height: 70,
+                                    ),
+                            ),
+                          ),
                         ),
                       ),
                       Divider(
@@ -148,9 +220,11 @@ class _QuestionPageState extends State<QuestionPage> {
 
   StatelessWidget contentQuestion(int index) {
     return questionModels[index].questionText.isNotEmpty
+    
         ? Text(
             questionModels[index].questionText,
             style: AppConstart().h1Style(),
+            
           )
         : WidgetImageYoutube(
             urlYoutube: questionModels[index].questionVideo,
@@ -158,4 +232,6 @@ class _QuestionPageState extends State<QuestionPage> {
             height: 130,
           );
   }
+
+ 
 }
