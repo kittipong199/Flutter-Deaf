@@ -12,17 +12,16 @@ String loginModelToJson(List<LoginModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class LoginModel {
-    String? id;
-    String? userName;
-    String? passwords;
-    dynamic images;
- 
+  String? id;
+  String? userName;
+  String? passwords;
+  dynamic images;
+
   LoginModel({
-        required this.id,
-        required this.userName,
-        required this.passwords,
-        required this.images,
-   
+    required this.id,
+    required this.userName,
+    required this.passwords,
+    required this.images,
   });
 
   factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
@@ -30,7 +29,6 @@ class LoginModel {
         userName: json["user_name"],
         passwords: json["passwords"],
         images: json["images"],
-         
       );
 
   Map<String, dynamic> toJson() => {
@@ -38,6 +36,23 @@ class LoginModel {
         "user_name": userName,
         "passwords": passwords,
         "images": images,
-         
       };
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'userName': userName,
+      'passwords': passwords,
+      'images': images,
+    };
+  }
+
+  factory LoginModel.fromMap(Map<String, dynamic> map) {
+    return LoginModel(
+      id: (map['id'] ?? '') as String,
+      userName: (map['user_name'] ?? '') as String,
+      passwords: (map['passwords'] ?? '') as String,
+      images: (map['image'] ?? '') as String,
+    );
+  }
 }

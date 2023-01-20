@@ -26,7 +26,7 @@ class AppRoute {
   static const coure = 'coures';
   //static const contents = 'contents';
   static const content_video = 'content_video';
-  static const signin = 'signin';
+ static const signin = 'signin';
   static const signup = 'signup';
 
   static get all => <String, WidgetBuilder>{

@@ -33,6 +33,7 @@ class _ContentPageState extends State<ContentPage> {
 
   final debouncer = Debouncer(milliSecond: 500);
   var contentModels = <ContentModel>[];
+  // for search
   var searchContentModels = <ContentModel>[];
   bool load = true;
   bool? haveData;
@@ -148,7 +149,7 @@ class _ContentPageState extends State<ContentPage> {
                   onPressed: () {
                     print("you click coure_id == > ${widget.couresModel.id}");
 
-                    Get.to(QuestionPage(coureModel: widget.couresModel!));
+                    Get.to(QuestionPage(coureModel: widget.couresModel));
                   },
                   child: Text("ทดสอบ"),
                 ),

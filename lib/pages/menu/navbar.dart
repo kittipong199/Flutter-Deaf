@@ -34,7 +34,7 @@ class _NavbarPageState extends State<NavbarPage> {
                   HomaPage(),
                   CouresPage(),
                   HistoryPage(),
-                  ProfliePage(),
+                  ProfliePage(id: 'id',),
                 ],
               ),
               // btn

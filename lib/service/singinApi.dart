@@ -11,9 +11,9 @@ import 'package:dio/dio.dart' as dio;
 class SigninApi {
  
 // อันเก่า
-  static Future<List<LoginModel>> futureSigninApi() async {
+  static Future<List<LoginModel>> futureSigninApi({required LoginModel loginModel}) async {
 
-    String ursl = 'https://www.androidthai.in.th/fluttertraining/getUserWhereUser.php?isAdd=true&user_name=1&passwords=2';
+    String ursl = 'http://10.0.2.2/deafapp/phpapi/getUserWhereUser.php?isAdd=true&user_name=${loginModel.userName}&passwords=${loginModel.passwords}';
     final response = await http.get(Uri.parse(ursl));
 
   
