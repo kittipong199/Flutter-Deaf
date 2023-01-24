@@ -6,27 +6,31 @@ import 'package:app_deaf/models/signinModel.dart';
 
 import 'package:app_deaf/utils/constarts.dart';
 import 'package:http/http.dart' as http;
-import 'package:dio/dio.dart' as dio;
+import 'package:dio/dio.dart' as dioApi hide FormData;
 
 class SigninApi {
- 
-// อันเก่า
-  static Future<List<LoginModel>> futureSigninApi({required LoginModel loginModel}) async {
+    logintoApp(data, urllogin) async {
+      var fulldata = phpApi + urllogin;
 
-    String ursl = 'http://10.0.2.2/deafapp/phpapi/getUserWhereUser.php?isAdd=true&user_name=${loginModel.userName}&passwords=${loginModel.passwords}';
-    final response = await http.get(Uri.parse(ursl));
+      var dio = dioApi.Dio();
 
-  
-    if (response.statusCode == 200) {
-      //pares data
-
-      final List result = json.decode(response.body);
-
-      return result.map((e) => LoginModel.fromJson(e)).toList();
-    } else {
-      throw Exception('Unexpected error occured!');
-    }
+      return await dio.post(fulldata);
   }
+
+  }
+
+// อันเก่า
+  // static Future<List<LoginModel>> futureSigninApi() async {
+
+  var urls = "http://10.0.2.2/deafapp/phpapi/loginuser.php";
+  // String ursl = 'http://10.0.2.2/deafapp/phpapi/getUserWhereUser.php?isAdd=true&user_name=${loginModel.userName}&passwords=${loginModel.passwords}';
+
+  //print(urls);
+
+  //final response = await http.get(Uri.parse(ursl));
+
+  //
+
   // อันใหม่
   // _setHeaders() =>{
   //   'Content-type': 'application/json',
@@ -45,4 +49,4 @@ class SigninApi {
 
   // }
 
-}
+//}

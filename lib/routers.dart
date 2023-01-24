@@ -30,7 +30,7 @@ class AppRoute {
   static const signup = 'signup';
 
   static get all => <String, WidgetBuilder>{
-        navbars: (context) => const NavbarPage(),
+        navbars: (context) => const NavbarPage(id: 'id',),
         home: (context) => const HomaPage(),
         coure:(context) => const CouresPage(),
         //contents:(context) => const ContentPage(),

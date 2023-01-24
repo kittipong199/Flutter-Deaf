@@ -20,6 +20,8 @@ import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart' as dioApi hide FormData;
 import 'package:dio/src/form_data.dart' as dioFormdata;
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
 
@@ -40,7 +42,7 @@ class _SignInPageState extends State<SignInPage> {
 
   //Future<List<LoginModel>>? loginToProfile;
   bool? haveData;
-
+  Future<List<LoginModel>>? futureUser;
   // loading
   bool _isLoading = false;
   var loginModel = <LoginModel>[];
@@ -55,15 +57,16 @@ class _SignInPageState extends State<SignInPage> {
 
   void _login() async {
     var dio = dioApi.Dio();
-    // ignore: unused_local_variable
+
     //var urls ="http://10.0.2.2/deafapp/phpapi/getUserWhereUser.php?isAdd=true&user_name=${user_name.text}&passwords=${passwords.text}";
+
     var urls = "http://10.0.2.2/deafapp/phpapi/loginuser.php";
     print(urls);
     dioFormdata.FormData formdata = dioFormdata.FormData.fromMap({
       'user_name': user_name.text,
       'passwords': passwords.text,
     });
-
+    //var response = await SigninApi.logintoApp(formdata, urls);
     var response = await dio.post(urls, data: formdata);
     // response.obs.firstRebuild คือ การแปลง ข้อมูล ให้อยู่ในรูปแบบ ของ bool ทำให้
     // user_name.text = "";
@@ -84,29 +87,30 @@ class _SignInPageState extends State<SignInPage> {
       print("user_name: ${model.userName}");
       print("passwords: ${model.passwords}");
       print("images: ${model.images}");
+
+  
     }
+    // void nexttoHone({required LoginModel loginModel}) {
+
+    // }
 
     if (bodys[0] == "Success") {
       print("ok pass");
 
-      // Get.to(ProfliePage(id: id));
-      //ignore: use_build_context_synchronously
-      setState(() {
-         Navigator.push(
-        context,
-        MaterialPageRoute<dynamic>(
-          builder: (_) => ProfliePage(id: loginUser[0].id!),
-        ),
-      );
-      });
+      //Get.to(NavbarPage(id: id));
+      for (var model in loginUser) {
+          if(model.id != null){
+            Get.to(NavbarPage(id: model.id.toString()));
+        }
+        }
      
-     // Navigator.pushReplacementNamed(context, AppRoute.navbars);
-
-      // ต้องการส่งค่า id ไปยังหน้า profile page
-      // Navigator.pushReplacementNamed(context, AppRoute.navbars);
     } else {
       print("ยังเขียนไม่ถูกหาวิธ๊ใหม่");
     }
+  }
+
+  void nexttoHone({required LoginModel loginModel}) {
+    Get.to(NavbarPage(id: id));
   }
 
   @override
@@ -241,17 +245,3 @@ class _SignInPageState extends State<SignInPage> {
     // Navigator.pushNamed(context, AppRoute.navbars);
   }
 }
-  // Widget loading(_isLoading) {
-  //   return _isLoading
-  //       ? Center(child: CircularProgressIndicator())
-  //       : Text("data");
-  // }
-
-
-  // Widget loading() {
-  //   return _isLoading
-  //       ? Center(child: CircularProgressIndicator())
-  //       : Text("data in crroect");
-  // }
-
- 

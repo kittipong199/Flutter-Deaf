@@ -27,13 +27,16 @@ class _CouresPageState extends State<CouresPage> {
   late TextEditingController controller;
 
   Future<List<Coures>>? futureCoures;
+  
+
+  // ทำงานก่อน เมื่อมีการ เปิด แอพ
   @override
   void initState() {
     super.initState();
     futureCoures = CouresApi.futureCouresApi();
     controller = TextEditingController();
   }
-
+/////////////
   @override
   Widget build(BuildContext context) {
     // mock call api

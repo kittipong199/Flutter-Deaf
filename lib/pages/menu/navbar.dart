@@ -1,23 +1,37 @@
-import 'package:app_deaf/models/signinModel.dart';
-import 'package:app_deaf/utils/app_controller.dart';
-import 'package:app_deaf/pages/history.dart';
-import 'package:app_deaf/pages/home/home.dart';
-import 'package:app_deaf/pages/coures.dart';
-import 'package:app_deaf/pages/proflie.dart';
-import 'package:app_deaf/routers.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:app_deaf/models/signinModel.dart';
+import 'package:app_deaf/pages/coures.dart';
+import 'package:app_deaf/pages/history.dart';
+import 'package:app_deaf/pages/home/home.dart';
+import 'package:app_deaf/pages/proflie.dart';
+import 'package:app_deaf/routers.dart';
+import 'package:app_deaf/utils/app_controller.dart';
+
 class NavbarPage extends StatefulWidget {
-  const NavbarPage({super.key});
+  const NavbarPage({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
+  final String id;
 
   @override
   State<NavbarPage> createState() => _NavbarPageState();
 }
 
 class _NavbarPageState extends State<NavbarPage> {
-  int currentIndex = 0; 
-     // กำหนดค่าเริ่มต้น สำหรับ navbar ในการแสดง wiggle หน้าแรก 0 คือ HomePage
+  int currentIndex = 0;
+
+  // กำหนดค่าเริ่มต้น สำหรับ navbar ในการแสดง wiggle หน้าแรก 0 คือ HomePage
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +40,16 @@ class _NavbarPageState extends State<NavbarPage> {
           init: AppController(),
           builder: (controller) {
             return Scaffold(
-             
               body: IndexedStack(
                 index: currentIndex,
-                children:  [
+                children: [
                   // สำหรับ แสดง หน้าต่างๆ
                   HomaPage(),
                   CouresPage(),
                   HistoryPage(),
-                  ProfliePage(id: 'id',),
+                  ProfliePage(
+                    id: widget.id,
+                  ),
                 ],
               ),
               // btn
@@ -49,10 +64,11 @@ class _NavbarPageState extends State<NavbarPage> {
                 // code for change wiggle in navbar
                 currentIndex: currentIndex,
                 onTap: ((value) {
-                  setState(() { 
+                  setState(() {
                     currentIndex = value;
+
+                    print("${widget.id}");
                   });
-                 
                 }),
                 /////////////////////
 
@@ -77,6 +93,7 @@ class _NavbarPageState extends State<NavbarPage> {
                   BottomNavigationBarItem(
                     icon: Icon(Icons.people),
                     label: 'โปรไฟล์',
+
                     // backgroundColor: Color(0xFFFFB200),
                   ),
                 ],

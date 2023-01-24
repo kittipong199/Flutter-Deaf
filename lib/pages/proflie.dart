@@ -1,9 +1,19 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 import 'dart:io';
-
+import 'dart:convert' as convert;
+import 'package:app_deaf/models/profileModel.dart';
+import 'package:app_deaf/models/signinModel.dart';
+import 'package:app_deaf/pages/menu/navbar.dart';
+import 'package:app_deaf/service/profileApi.dart';
+import 'package:app_deaf/service/singinApi.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:get/get.dart';
+
+import 'package:http/http.dart' as http;
+
+import 'package:dio/dio.dart' as dioApi hide FormData;
+import 'package:dio/src/form_data.dart' as dioFormdata;
 
 class ProfliePage extends StatefulWidget {
   final String id;
@@ -18,51 +28,93 @@ class ProfliePage extends StatefulWidget {
 
 class _ProfliePageState extends State<ProfliePage> {
   final ImagePicker _imagePicker = ImagePicker();
+
   final file = File;
+  Future<List<ProfileModel>>? futureProfile;
+  
+  var index;
+
+  
+
+  Future<List<ProfileModel>> getProfile() async {
+    var dio = dioApi.Dio();
+    //var data = widget.id.toString();
+    // var getid = data;
+    //print(data.runtimeType);
+    var urlApi =
+        "http://10.0.2.2/deafapp/phpapi/getProfileWhereUser.php?id=${widget.id}";
+    print(urlApi);
+    //content.dart response = await dio.get(urlApi);
+    var response = await dio.get(urlApi);
+    var bodys = convert.json.decode(response.data.toString());
+    print(bodys);
+    List<dynamic> result = bodys[2];
+    print(result.runtimeType);
+    // add result to model name LoginModel
+    List<ProfileModel> profile =
+        result.map((e) => ProfileModel.fromJson(e)).toList();
+
+    print(bodys[2]);
+
+    print(profile.toString());
+
+    for (var model in profile) {
+      print("id: ${model.id}");
+      print("user_name: ${model.userName}");
+      print("passwords: ${model.passwords}");
+      print("images: ${model.images}");
+    }
+    return profile;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    futureProfile= getProfile();
+    
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar
-      appBar: AppBar(
-        title: Text(
-          "โปรไฟล์",
-          style: TextStyle(color: Colors.black),
-        ),
-        backgroundColor: Color(0xFFFFB200),
-        elevation: 1,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
+        //appBar
+        appBar: AppBar(
+          title: Text(
+            "โปรไฟล์",
+            style: TextStyle(color: Colors.black),
           ),
-          onPressed: () {},
+          backgroundColor: Color(0xFFFFB200),
+          elevation: 1,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+            onPressed: () {},
+          ),
         ),
-      ),
 
-      //body
-      body: Center(
-        child: Container(
-          padding: EdgeInsets.only(left: 16, top: 25, right: 16),
-          child: ListView(
-            children: [
-              Text(
-                "โปรไฟล์ของคุณ: ${widget.id}",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-              ),
-              SizedBox(
+        //body
+       body: FutureBuilder<List<ProfileModel>>(
+            future: futureProfile!,
+            builder: (BuildContext context,
+                AsyncSnapshot<List<ProfileModel>> snapshot) {
+              if (snapshot.hasData) {
+                final profileData = snapshot.data;
+                return Center(
+                  child: Column(children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
+                      child: Text("โปรไฟล์ของคุณ",
+                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                     SizedBox(
                 height: 15,
               ),
-
-              Center(
-                // child: Stack(
-                //   children: [
-                //     CircleAvatar(
-
-                //     foregroundImage: AssetImage('assets/images/logo.jpg'),
-                //   ),
-
-                // this show image Profile
+               Center(
+              
                 child: Stack(
                   children: [
                     Container(
@@ -79,7 +131,7 @@ class _ProfliePageState extends State<ProfliePage> {
                               color: Colors.black.withOpacity(0.1),
                               offset: Offset(0, 10))
                         ],
-                        shape: BoxShape.circle,
+                         shape: BoxShape.circle,
                         // image: DecorationImage(
                         //     fit: BoxFit.cover,
                         //     image: file == null ? AssetImage('assets/images/logo.jpg') : Image.file(file)
@@ -88,7 +140,6 @@ class _ProfliePageState extends State<ProfliePage> {
                       ),
                     ),
 
-                    //bottom change image and edit
                     Positioned(
                       bottom: 0,
                       right: 0,
@@ -113,12 +164,13 @@ class _ProfliePageState extends State<ProfliePage> {
                               Icons.edit,
                               color: Colors.white,
                             ),
-                          )),
+                          )
+                          ),
+                          
                     )
                   ],
                 ),
-              ),
-              SizedBox(
+              ), SizedBox(
                 height: 35,
               ),
               // Text
@@ -129,7 +181,8 @@ class _ProfliePageState extends State<ProfliePage> {
               ),
              
               ),
-              Text(widget.id),
+              // การเรียก ข้อมูล จาก snapshot ออกมาแสดง
+                Text( snapshot.data![0].userName.toString(),),
               SizedBox(
                 height: 100,
               ),
@@ -150,11 +203,16 @@ class _ProfliePageState extends State<ProfliePage> {
                     style:
                         TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                   ))
-            ],
-          ),
-        ),
-      ),
-    );
+              
+                    // ... other widgets
+                  ]),
+                );
+              } else {
+                return CircularProgressIndicator();
+              }
+            }));
+
+           
   }
 
   Future<Null> chooseImage(ImageSource imageSource) async {
