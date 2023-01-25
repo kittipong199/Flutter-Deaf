@@ -5,6 +5,7 @@ import 'dart:math';
 
 import 'package:app_deaf/models/answerModel.dart';
 import 'package:app_deaf/models/question_Model.dart';
+import 'package:app_deaf/pages/question/video_quiz.dart';
 import 'package:app_deaf/pages/video_quiz.dart';
 import 'package:app_deaf/utils/app_constarts.dart';
 import 'package:app_deaf/widget/widget_image_youtube.dart';
@@ -99,12 +100,11 @@ class _QuestionPageState extends State<QuestionPage> {
       setState(() {});
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     //  listAnswerModels.shuffle();
     return Scaffold(
-      
       appBar: AppBar(
         title: Text('ข้อสอบ${couresModel!.couresname}'),
         actions: [
@@ -126,7 +126,7 @@ class _QuestionPageState extends State<QuestionPage> {
                     score++;
                   }
                 }
-                Get.snackbar('Score: $questionModels.',  '$score คะแนน',
+                Get.snackbar('Score: $questionModels.', '$score คะแนน',
                     snackPosition: SnackPosition.BOTTOM);
               } else {
                 print('ตอบไม่ครบ');
@@ -142,28 +142,23 @@ class _QuestionPageState extends State<QuestionPage> {
           ? Center(child: CircularProgressIndicator())
           : haveData!
               ? ListView.builder(
-                
                   itemCount: questionModels.length,
                   itemBuilder: (context, index) => Column(
                     children: [
                       Card(
                         color: Color(0xFFFFB200),
-                        
                         child: Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: Container(
                             child: Row(
-                              
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              
                               children: [
-                                
                                 Text(
                                   (index + 1).toString(),
                                   style: AppConstart().h1Style(),
                                 ),
-                                contentQuestion(index).marginOnly(right: 10,left: 20),
-                                
+                                contentQuestion(index)
+                                    .marginOnly(right: 10, left: 20),
                               ],
                             ),
                           ),
@@ -171,38 +166,50 @@ class _QuestionPageState extends State<QuestionPage> {
                       ),
                       // Text('question ==. ${questionModels[index].id}')
 
-
                       Card(
-                        
                         color: Color.fromARGB(255, 108, 184, 158),
                         child: Container(
-                        
                           child: ListView.builder(
-                            
                             shrinkWrap: true,
                             physics: const ScrollPhysics(),
                             // กำหนดให้ คำตอบมี มากสุดได้ 4 ข้อ
-                            itemCount: listAnswerModels[index].length = 4 ,
-                           
+                            itemCount: listAnswerModels[index].length = 4,
+
                             itemBuilder: (context, index2) => RadioListTile(
                               value: index2,
                               groupValue: corrects[index],
                               onChanged: (value) {
                                 corrects[index] = value!;
-                      
+
                                 print('value is ${corrects}');
                                 setState(() {});
                               },
                               title: listAnswerModels[index][index2]
                                       .answerText
                                       .isNotEmpty
-                                  ? Text(listAnswerModels[index][index2].answerText,textAlign: TextAlign.start,)
-                                  : WidgetImageYoutube(
-                                      urlYoutube: listAnswerModels[index][index2]
-                                          .answerVideo,
-                                      width: 100,
-                                      height: 70,
-                                    ),
+                                  ? Text(
+                                      listAnswerModels[index][index2]
+                                          .answerText,
+                                      textAlign: TextAlign.start,
+                                    )
+                                  : TextButton(
+                                      onPressed: () {
+                                        print(
+                                            '${listAnswerModels[index][index2].id}');
+                                        Get.to(VideoAnswerPage(
+                                            listAnswerModel:
+                                               listAnswerModels[index][index2]));
+                                      },
+                                      child: WidgetImageYoutube(
+                                        urlYoutube: listAnswerModels[index]
+                                                [index2]
+                                            .answerVideo,
+                                        width: 100,
+                                        height: 70,
+                                      )),
+                              // subtitle: TextButton(onPressed: () {
+
+                              // },child: Text('ดูวิดีโอ'),),
                             ),
                           ),
                         ),
@@ -220,11 +227,9 @@ class _QuestionPageState extends State<QuestionPage> {
 
   StatelessWidget contentQuestion(int index) {
     return questionModels[index].questionText.isNotEmpty
-    
         ? Text(
             questionModels[index].questionText,
             style: AppConstart().h1Style(),
-            
           )
         : WidgetImageYoutube(
             urlYoutube: questionModels[index].questionVideo,
@@ -232,6 +237,4 @@ class _QuestionPageState extends State<QuestionPage> {
             height: 130,
           );
   }
-
- 
 }
