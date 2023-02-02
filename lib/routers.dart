@@ -4,6 +4,7 @@ import 'package:app_deaf/pages/history.dart';
 import 'package:app_deaf/pages/home/home.dart';
 import 'package:app_deaf/pages/menu/navbar.dart';
 import 'package:app_deaf/pages/proflie.dart';
+import 'package:app_deaf/pages/signin_signup/reset_password.dart';
 import 'package:app_deaf/pages/signin_signup/signin.dart';
 import 'package:app_deaf/pages/signin_signup/signup.dart';
 import 'package:app_deaf/pages/video_content.dart';
@@ -29,6 +30,7 @@ class AppRoute {
  static const signin = 'signin';
   static const signup = 'signup';
 
+  static const reset_password = 'reset_password';
   static get all => <String, WidgetBuilder>{
         navbars: (context) => const NavbarPage(id: 'id',),
         home: (context) => const HomaPage(),
@@ -37,6 +39,7 @@ class AppRoute {
         content_video:(context) => const VideoContentPage(),
         signin:(context) => const SignInPage(),
         signup:(context) => const SignUpPage(),
+         //reset_password:(context) => const ResetPasswordPage(profileModel: 'pro',),
 
       };
 }

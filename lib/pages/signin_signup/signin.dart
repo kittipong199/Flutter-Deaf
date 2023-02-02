@@ -109,9 +109,9 @@ class _SignInPageState extends State<SignInPage> {
     }
   }
 
-  void nexttoHone({required LoginModel loginModel}) {
-    Get.to(NavbarPage(id: id));
-  }
+  // void nexttoHone({required LoginModel loginModel}) {
+  //   Get.to(NavbarPage(id: id));
+  // }
 
   @override
   Widget build(BuildContext context) {

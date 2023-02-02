@@ -4,6 +4,8 @@ import 'dart:convert' as convert;
 import 'package:app_deaf/models/profileModel.dart';
 import 'package:app_deaf/models/signinModel.dart';
 import 'package:app_deaf/pages/menu/navbar.dart';
+import 'package:app_deaf/pages/signin_signup/reset_password.dart';
+import 'package:app_deaf/routers.dart';
 import 'package:app_deaf/service/profileApi.dart';
 import 'package:app_deaf/service/singinApi.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,7 @@ class ProfliePage extends StatefulWidget {
   const ProfliePage({
     Key? key,
     required this.id,
+    List<ProfileModel>? profileModel,
   }) : super(key: key);
 
   @override
@@ -31,10 +34,8 @@ class _ProfliePageState extends State<ProfliePage> {
 
   final file = File;
   Future<List<ProfileModel>>? futureProfile;
-  
-  var index;
 
-  
+  var index;
 
   Future<List<ProfileModel>> getProfile() async {
     var dio = dioApi.Dio();
@@ -71,8 +72,7 @@ class _ProfliePageState extends State<ProfliePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    futureProfile= getProfile();
-    
+    futureProfile = getProfile();
   }
 
   @override
@@ -96,114 +96,123 @@ class _ProfliePageState extends State<ProfliePage> {
         ),
 
         //body
-       body: FutureBuilder<List<ProfileModel>>(
+        body: FutureBuilder<List<ProfileModel>>(
             future: futureProfile!,
             builder: (BuildContext context,
                 AsyncSnapshot<List<ProfileModel>> snapshot) {
               if (snapshot.hasData) {
                 final profileData = snapshot.data;
                 return Center(
-                  child: Column(children: [
+                  child: ListView(children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
-                      child: Text("โปรไฟล์ของคุณ",
-                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+                      padding:
+                          const EdgeInsets.only(left: 16, top: 25, right: 16),
+                      child: Text(
+                        "โปรไฟล์ของคุณ",
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.w500),
                       ),
                     ),
-                     SizedBox(
-                height: 15,
-              ),
-               Center(
-              
-                child: Stack(
-                  children: [
-                    Container(
-                      width: 130,
-                      height: 130,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 4,
-                            color: Theme.of(context).scaffoldBackgroundColor),
-                        boxShadow: [
-                          BoxShadow(
-                              spreadRadius: 2,
-                              blurRadius: 10,
-                              color: Colors.black.withOpacity(0.1),
-                              offset: Offset(0, 10))
-                        ],
-                         shape: BoxShape.circle,
-                        // image: DecorationImage(
-                        //     fit: BoxFit.cover,
-                        //     image: file == null ? AssetImage('assets/images/logo.jpg') : Image.file(file)
-
-                        //     )
-                      ),
+                    SizedBox(
+                      height: 15,
                     ),
+                    Center(
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: 130,
+                            height: 130,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 4,
+                                  color: Theme.of(context)
+                                      .scaffoldBackgroundColor),
+                              boxShadow: [
+                                BoxShadow(
+                                    spreadRadius: 2,
+                                    blurRadius: 10,
+                                    color: Colors.black.withOpacity(0.1),
+                                    offset: Offset(0, 10))
+                              ],
+                              shape: BoxShape.circle,
+                              // image: DecorationImage(
+                              //     fit: BoxFit.cover,
+                              //     image: file == null ? AssetImage('assets/images/logo.jpg') : Image.file(file)
 
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              width: 4,
-                              color: Theme.of(context).scaffoldBackgroundColor,
+                              //     )
                             ),
-                            color: Colors.green,
                           ),
-                          child: InkWell(
-                            onTap: () => chooseImage(ImageSource.camera),
-                            child: Icon(
-                              // icon: Icon(
-                              //   Icons.edit,
-                              // ),
-                              // onPressed: () => chooseImage(ImageSource.camera),
-                              Icons.edit,
-                              color: Colors.white,
-                            ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    width: 4,
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                  ),
+                                  color: Colors.green,
+                                ),
+                                child: InkWell(
+                                  onTap: () => chooseImage(ImageSource.camera),
+                                  child: Icon(
+                                    // icon: Icon(
+                                    //   Icons.edit,
+                                    // ),
+                                    // onPressed: () => chooseImage(ImageSource.camera),
+                                    Icons.edit,
+                                    color: Colors.white,
+                                  ),
+                                )),
                           )
-                          ),
-                          
-                    )
-                  ],
-                ),
-              ), SizedBox(
-                height: 35,
-              ),
-              // Text
-              Center(
-                  child: Text(
-                "ชื่อของคุณ",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-              ),
-             
-              ),
-              // การเรียก ข้อมูล จาก snapshot ออกมาแสดง
-                Text( snapshot.data![0].userName.toString(),),
-              SizedBox(
-                height: 100,
-              ),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF277BC0),
-                    shape: const StadiumBorder(),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 35,
+                    ),
+                    // Text
+                    Center(
+                      child: Text(
+                        "ชื่อของคุณ",
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    // การเรียก ข้อมูล จาก snapshot ออกมาแสดง
+                    Center(
+                      child: Text(
+                        snapshot.data![0].userName.toString(),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 100,
+                    ),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF277BC0),
+                          shape: const StadiumBorder(),
 
-                    minimumSize: Size(120, 50), // background
+                          minimumSize: Size(120, 50), // background
 
-                    // foreground
-                  ),
-                  onPressed: () {
-                    print(",${widget.id}");
-                  },
-                  child: Text(
-                    'เปลี่ยนรหัสผ่าน',
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                  ))
-              
+                          // foreground
+                        ),
+                        onPressed: () {
+                          print(",${widget.id}");
+                          _handleCilkResetPass(
+                            // ใส่ [0] แทน [index] 
+                              profileModel: snapshot.data![0]);
+                        },
+                        child: Text(
+                          'เปลี่ยนรหัสผ่าน',
+                          style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.bold),
+                        ))
+
                     // ... other widgets
                   ]),
                 );
@@ -211,8 +220,17 @@ class _ProfliePageState extends State<ProfliePage> {
                 return CircularProgressIndicator();
               }
             }));
+  }
 
-           
+  void _handleCilkResetPass({required ProfileModel profileModel}) {
+    //
+    print(" at _handClickContent == > ${profileModel.toJson()}");
+
+    Get.to(ResetPasswordPage(
+      profileModel: profileModel,
+    ));
+    //  Navigator.pushNamed(context, AppRoute.contents);
+    // Navigator.pushNamed(context, AppRoute.navbars);
   }
 
   Future<Null> chooseImage(ImageSource imageSource) async {

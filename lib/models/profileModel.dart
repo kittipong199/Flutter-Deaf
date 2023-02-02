@@ -12,10 +12,10 @@ String ProfileModelToJson(List<ProfileModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ProfileModel {
-  String? id;
-  String? userName;
-  String? passwords;
-  dynamic images;
+  String id;
+  String userName;
+  String passwords;
+  String images;
 
   ProfileModel({
     required this.id,
@@ -28,14 +28,14 @@ class ProfileModel {
         id: json["id"],
         userName: json["user_name"],
         passwords: json["passwords"],
-        images: json["images"],
+        images: json["images"] == null ? '' : json["images"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "user_name": userName,
         "passwords": passwords,
-        "images": images,
+        "images": images == null ? null : images,
       };
 
   Map<String, dynamic> toMap() {
@@ -43,7 +43,7 @@ class ProfileModel {
       'id': id,
       'userName': userName,
       'passwords': passwords,
-      'images': images,
+      'images': images ,
     };
   }
 

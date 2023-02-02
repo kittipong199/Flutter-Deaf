@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:app_deaf/models/ContentModel.dart';
 import 'package:app_deaf/models/signinModel.dart';
 import 'package:app_deaf/pages/coures.dart';
 import 'package:app_deaf/pages/history.dart';
@@ -16,9 +17,11 @@ class NavbarPage extends StatefulWidget {
   const NavbarPage({
     Key? key,
     required this.id,
+   
   }) : super(key: key);
   final String id;
-
+ 
+ 
   @override
   State<NavbarPage> createState() => _NavbarPageState();
 }
@@ -46,7 +49,7 @@ class _NavbarPageState extends State<NavbarPage> {
                   // สำหรับ แสดง หน้าต่างๆ
                   HomaPage(),
                   CouresPage(),
-                  HistoryPage(),
+                  HistoryPage(id: widget.id,),
                   ProfliePage(
                     id: widget.id,
                   ),

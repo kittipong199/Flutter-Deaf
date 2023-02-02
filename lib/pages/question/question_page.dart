@@ -126,12 +126,12 @@ class _QuestionPageState extends State<QuestionPage> {
                     score++;
                   }
                 }
-                Get.snackbar('Score: $questionModels.', '$score คะแนน',
-                    snackPosition: SnackPosition.BOTTOM);
+                Get.snackbar('คะแนนเต็ม:${widget.coureModel.couresname.length -1}', 'ได้ $score คะแนน',
+                    snackPosition: SnackPosition.TOP);
               } else {
                 print('ตอบไม่ครบ');
                 Get.snackbar('ทำไม่ครบ', 'กรุณาทำใหม่ให้ครบ ข้อ',
-                    snackPosition: SnackPosition.BOTTOM);
+                    snackPosition: SnackPosition.TOP);
               }
             },
             icon: const Icon(Icons.send_outlined),
