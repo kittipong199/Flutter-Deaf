@@ -1,11 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert' as convert;
 
+import 'package:app_deaf/pages/menu/navbar.dart';
+import 'package:app_deaf/pages/proflie.dart';
 import 'package:dio/dio.dart' as dioApi hide FormData;
 import 'package:dio/src/form_data.dart' as dioFormdata;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:get/get.dart';
 import 'package:app_deaf/models/profileModel.dart';
 
 class ResetPasswordPage extends StatefulWidget {
@@ -103,6 +105,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                           onPressed: () {
                             // place sign in function here
                             getProfile();
+                           
                           },
                         ),
                       ),
@@ -125,9 +128,12 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     // var getid = data;
     //print(data.runtimeType);
     var formData = resetpassword.text;
-    
+
     var urlApi =
-        "http://10.0.2.2/deafapp/phpapi/resetPassword.php?isAdd=true&id=${widget.profileModel.id}&passwords=${formData.toString()}";
+        "http://sit.thonburi-u.ac.th/phpApi/resetPassword.php?isAdd=true&id=${widget.profileModel.id}&passwords=${formData.toString()}";
+
+    resetpassword.text = "";
+    
     print(urlApi);
     //content.dart response = await dio.get(urlApi);
     var response = await dio.get(urlApi);
@@ -137,25 +143,20 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     //print(result.runtimeType);
     // add result to model name LoginModel
     var profile = bodys![2].map((e) => ProfileModel.fromJson(e)).toList();
-    resetpassword.text = "";
+
     print(bodys);
-     
-    
-        
 
     print(bodys[2]);
 
     print(profile.toString());
-    
+
     for (var model in profile) {
       print("id: ${model.id}");
       print("user_name: ${model.userName}");
       print("passwords: ${model.passwords}");
       print("images: ${model.images}");
-
-    
     }
-   
+
     return profile;
   }
 }

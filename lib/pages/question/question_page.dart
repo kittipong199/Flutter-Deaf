@@ -75,7 +75,7 @@ class _QuestionPageState extends State<QuestionPage> {
           int indexTrue = 0;
 
           String urlApiAnswer =
-              'https://www.androidthai.in.th/fluttertraining/getAnswerWhereIdQuestionId.php?isAdd=true&question_id=${model.id}';
+              'http://sit.thonburi-u.ac.th/phpApi/getAnswerWhereIdQuestionId.php?isAdd=true&question_id=${model.id}';
 
           await Dio().get(urlApiAnswer).then((value) {
             for (var element in json.decode(value.data)) {

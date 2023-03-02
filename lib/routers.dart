@@ -29,17 +29,18 @@ class AppRoute {
   static const content_video = 'content_video';
  static const signin = 'signin';
   static const signup = 'signup';
-
+  static const profile = 'profile';
   static const reset_password = 'reset_password';
   static get all => <String, WidgetBuilder>{
-        navbars: (context) => const NavbarPage(id: 'id',),
+        navbars: (context) => const NavbarPage(),
         home: (context) => const HomaPage(),
         coure:(context) => const CouresPage(),
         //contents:(context) => const ContentPage(),
         content_video:(context) => const VideoContentPage(),
         signin:(context) => const SignInPage(),
         signup:(context) => const SignUpPage(),
-         //reset_password:(context) => const ResetPasswordPage(profileModel: 'pro',),
+        // profile:(context) => const ProfliePage(),
+        //reset_password:(context) => const ResetPasswordPage(),
 
       };
 }

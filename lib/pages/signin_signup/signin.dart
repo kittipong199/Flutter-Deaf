@@ -7,18 +7,19 @@ import 'dart:math';
 // import 'package:app_deaf/service/couresApi.dart';
 import 'package:app_deaf/models/signinModel.dart';
 import 'package:app_deaf/pages/menu/navbar.dart';
-import 'package:app_deaf/pages/proflie.dart';
+
 import 'package:app_deaf/routers.dart';
-import 'package:app_deaf/service/signUpApi.dart';
+
 import 'package:app_deaf/service/singinApi.dart';
 import 'package:app_deaf/themes/styles.dart';
+import 'package:app_deaf/utils/normal_dialog.dart';
+import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:http/http.dart' as http;
-
-import 'package:dio/dio.dart' as dioApi hide FormData;
-import 'package:dio/src/form_data.dart' as dioFormdata;
+import 'package:dio/dio.dart' as dioapi;
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,8 +36,8 @@ class _SignInPageState extends State<SignInPage> {
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   // String user_name ,passwords;
-  late TextEditingController user_name = TextEditingController();
-  late TextEditingController passwords = TextEditingController();
+   TextEditingController user_name = TextEditingController();
+   TextEditingController passwords = TextEditingController();
 
   FocusNode myFocusNode = FocusNode();
 
@@ -55,64 +56,7 @@ class _SignInPageState extends State<SignInPage> {
     // futureSignin = SigninApi.futureSigninApi();
   }
 
-  void _login() async {
-    var dio = dioApi.Dio();
-
-    //var urls ="http://10.0.2.2/deafapp/phpapi/getUserWhereUser.php?isAdd=true&user_name=${user_name.text}&passwords=${passwords.text}";
-
-    var urls = "http://10.0.2.2/deafapp/phpapi/loginuser.php";
-    print(urls);
-    dioFormdata.FormData formdata = dioFormdata.FormData.fromMap({
-      'user_name': user_name.text,
-      'passwords': passwords.text,
-    });
-    //var response = await SigninApi.logintoApp(formdata, urls);
-    var response = await dio.post(urls, data: formdata);
-    // response.obs.firstRebuild คือ การแปลง ข้อมูล ให้อยู่ในรูปแบบ ของ bool ทำให้
-    // user_name.text = "";
-    // passwords.text = "";
-    var bodys = convert.json.decode(response.data.toString());
-
-    List<dynamic> result = bodys[2];
-    // add result to model name LoginModel
-    List<LoginModel> loginUser =
-        result.map((e) => LoginModel.fromJson(e)).toList();
-
-    print(bodys[2]);
-
-    print(loginUser.toString());
-
-    for (var model in loginUser) {
-      print("id: ${model.id}");
-      print("user_name: ${model.userName}");
-      print("passwords: ${model.passwords}");
-      print("images: ${model.images}");
-
   
-    }
-    // void nexttoHone({required LoginModel loginModel}) {
-
-    // }
-
-    if (bodys[0] == "Success") {
-      print("ok pass");
-
-      //Get.to(NavbarPage(id: id));
-      for (var model in loginUser) {
-          if(model.id != null){
-            Get.to(NavbarPage(id: model.id.toString()));
-        }
-        }
-     
-    } else {
-      print("ยังเขียนไม่ถูกหาวิธ๊ใหม่");
-    }
-  }
-
-  // void nexttoHone({required LoginModel loginModel}) {
-  //   Get.to(NavbarPage(id: id));
-  // }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -159,7 +103,7 @@ class _SignInPageState extends State<SignInPage> {
                       controller: user_name,
                       validator: (String? input) {
                         if (input == null || input.isEmpty) {
-                          return 'กรุณาใส่ ชื่อผู้ใช้งาน!';
+                          normalDialog(context, 'ใส่ชื่อผู้ใช้งาน');
                         }
                         return null;
                       },
@@ -184,7 +128,7 @@ class _SignInPageState extends State<SignInPage> {
                         controller: passwords,
                         validator: (String? input) {
                           if (input == null || input.isEmpty) {
-                            return 'กรุณาใส่ รหัสผ่าน!';
+                            normalDialog(context, 'ใส่รหัสผ่าน');
                           }
                           return null;
                         },
@@ -216,9 +160,7 @@ class _SignInPageState extends State<SignInPage> {
                                   192), //fromARGB(255, 39, 123, 192)
                             ),
                             onPressed: () {
-                              bool pass = formkey.currentState!.validate();
-
-                              _login();
+                              checkUseLogin();
 
                               // _toHome();
                             }, // เมื่อกดปุ่ม ให้เรียกใช้ postRegister
@@ -243,5 +185,42 @@ class _SignInPageState extends State<SignInPage> {
   void _toSignUp() {
     Navigator.pushNamed(context, AppRoute.signup);
     // Navigator.pushNamed(context, AppRoute.navbars);
+  }
+
+  Future<Null> checkUseLogin() async {
+    var userName = user_name.text;
+    var pass = passwords.text;
+    var dio = dioapi.Dio();
+    var url =
+        'http://sit.thonburi-u.ac.th/phpApi/checkUser.php?isAdd=true&user_name=${userName}';
+    try {
+      var response = await dio.get(url);
+      var bodys = convert.json.decode(response.data.toString());
+      print('resCheckUser == ${bodys}');
+      // if (bodys == null) {
+      // } else {
+      //   normalDialog(context, 'User นี่ ${userName.toString()} มีคนใช้แล้ว');
+      // } 
+      for (var map in bodys) {
+        LoginModel loginModel = LoginModel.fromJson(map);
+        if (pass == loginModel.passwords) {
+          datalogLoginUser(NavbarPage(), loginModel);
+        } else {
+          normalDialog(context, 'รหัสผ่านไม่ถูกต้อง');
+        }
+      }
+    } catch (e) {}
+  }
+
+  Future<Null> datalogLoginUser(Widget myWidget, LoginModel loginModel) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString('id', loginModel.id.toString());
+    preferences.setString('userName', loginModel.userName.toString());
+    preferences.setString('password', loginModel.passwords.toString());
+
+    MaterialPageRoute route = MaterialPageRoute(
+      builder: (context) => myWidget,
+    );
+    Navigator.pushAndRemoveUntil(context, route, (route) => false);
   }
 }

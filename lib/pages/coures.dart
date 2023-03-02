@@ -1,12 +1,14 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // import 'package:app_deaf/service/remote_service.dart';
 
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
+
+import 'package:app_deaf/models/Coures.dart';
 import 'package:app_deaf/pages/content.dart';
 import 'package:app_deaf/routers.dart';
-import 'package:flutter/material.dart';
-import 'package:app_deaf/models/Coures.dart';
-// import 'package:app_deaf/models/post.dart';
+import 'package:app_deaf/models/post.dart';
 import 'package:app_deaf/service/couresApi.dart' show CouresApi;
 
 import 'package:animation_search_bar/animation_search_bar.dart';
@@ -17,8 +19,11 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 
 class CouresPage extends StatefulWidget {
-  const CouresPage({super.key});
-
+  const CouresPage({
+    Key? key,
+   
+  }) : super(key: key);
+ 
   @override
   State<CouresPage> createState() => _CouresPageState();
 }
@@ -27,7 +32,6 @@ class _CouresPageState extends State<CouresPage> {
   late TextEditingController controller;
 
   Future<List<Coures>>? futureCoures;
-  
 
   // ทำงานก่อน เมื่อมีการ เปิด แอพ
   @override
@@ -36,6 +40,7 @@ class _CouresPageState extends State<CouresPage> {
     futureCoures = CouresApi.futureCouresApi();
     controller = TextEditingController();
   }
+
 /////////////
   @override
   Widget build(BuildContext context) {
@@ -82,6 +87,7 @@ class _CouresPageState extends State<CouresPage> {
                         // กดไปหน้า content
                         onTap: () {
                           _handleCilkContent(coures: snapshot.data![index]);
+                        
                         },
                         // แสดงผล รายการ คอร์ส
                         child: Padding(
@@ -107,7 +113,7 @@ class _CouresPageState extends State<CouresPage> {
     //
     print(" at _handClickContent == > ${coures.toJson()}");
 
-    Get.to(ContentPage(couresModel: coures,));
+    Get.to(ContentPage(couresModel: coures));
     //  Navigator.pushNamed(context, AppRoute.contents);
     // Navigator.pushNamed(context, AppRoute.navbars);
   }

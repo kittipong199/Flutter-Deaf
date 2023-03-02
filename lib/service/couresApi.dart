@@ -12,7 +12,7 @@ class CouresApi {
   static Future<List<Coures>> futureCouresApi() async {
 
    
-    String ursl = 'https://www.androidthai.in.th/fluttertraining/getAllCoursArt.php';
+    String ursl = 'http://sit.thonburi-u.ac.th/phpApi/getAllCouresArt.php';
        
     final response = await http.get(Uri.parse(ursl));
 

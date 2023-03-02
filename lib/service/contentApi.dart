@@ -13,7 +13,7 @@ import 'package:http/http.dart' as http;
 class ContentsApi {
    static Future<List<ContentModel>> futureContentApi({required Coures couresModel}) async {
 
-     String urlApi = 'https://www.androidthai.in.th/fluttertraining/getContentWhereContentArt.php?isAdd=true&coure_id=${couresModel.id  }';
+     String urlApi = 'http://sit.thonburi-u.ac.th/phpApi/getContentWhereContentArt.php?isAdd=true&coure_id=${couresModel.id  }';
     
       final response =
         await http.get(Uri.parse(urlApi));

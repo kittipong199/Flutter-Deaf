@@ -1,19 +1,23 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 import 'dart:convert' as convert;
+import 'dart:developer';
 
 import 'package:animation_search_bar/animation_search_bar.dart';
-import 'package:app_deaf/pages/question/question_page.dart';
+import 'package:app_deaf/models/historyModel.dart';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 
+import 'package:dio/dio.dart' as dioApi hide FormData;
 import 'package:app_deaf/models/ContentModel.dart';
 import 'package:app_deaf/models/Coures.dart';
+import 'package:app_deaf/pages/question/question_page.dart';
 import 'package:app_deaf/pages/video_youtube.dart';
-import 'package:app_deaf/routers.dart';
+
 import 'package:app_deaf/service/contentApi.dart' show ContentsApi;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ContentPage extends StatefulWidget {
   const ContentPage({
@@ -22,6 +26,8 @@ class ContentPage extends StatefulWidget {
   }) : super(key: key);
 
   final Coures couresModel;
+
+  get contentId => contentId;
 
   @override
   State<ContentPage> createState() => _ContentPageState();
@@ -37,7 +43,7 @@ class _ContentPageState extends State<ContentPage> {
   var searchContentModels = <ContentModel>[];
   bool load = true;
   bool? haveData;
-
+  String userId = '';
   @override
   void initState() {
     super.initState();
@@ -45,13 +51,20 @@ class _ContentPageState extends State<ContentPage> {
         ContentsApi.futureContentApi(couresModel: widget.couresModel);
 
     controller = TextEditingController();
-
+    findUser();
     readContentFromCouceId();
+  }
+
+  Future<Null> findUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      userId = preferences.getString('id')!;
+    });
   }
 
   Future<void> readContentFromCouceId() async {
     String urlApi =
-        'https://www.androidthai.in.th/fluttertraining/getContentWhereIdCourseUng.php?isAdd=true&coure_id=${widget.couresModel.id}';
+        'http://sit.thonburi-u.ac.th/phpApi/getContentWhereIdCourseUng.php?isAdd=true&coure_id=${widget.couresModel.id}';
 
     print('urlAPI ---> $urlApi');
     await Dio().get(urlApi).then((value) {
@@ -68,8 +81,9 @@ class _ContentPageState extends State<ContentPage> {
       if (contentModels.isNotEmpty) {
         searchContentModels.addAll(contentModels);
       }
-      print('ขนาด searchContentModel --> ${searchContentModels.length}, haveData --> $haveData');
-          
+      print(
+          'ขนาด searchContentModel --> ${searchContentModels.length}, haveData --> $haveData');
+
       load = false;
       setState(() {});
     });
@@ -176,6 +190,8 @@ class _ContentPageState extends State<ContentPage> {
                       onTap: () {
                         _handleCilkContentVideo(
                             contentModel: searchContentModels[index]);
+
+                        checkHisto(contentModel: searchContentModels[index]);
                       },
 
                       child: Padding(
@@ -198,12 +214,45 @@ class _ContentPageState extends State<ContentPage> {
   }
 
   void _handleCilkContentVideo({required ContentModel contentModel}) {
-    // Navigator.pushNamed(context, AppRoute.content_video);
-    // Navigator.pushNamed(context, AppRoute.navbars);
-
     Get.to(VideoYoutube(
       contentModel: contentModel,
     ));
+  }
+
+  Future<Null> checkHisto({required ContentModel contentModel}) async {
+    String conid = contentModel.id;
+    var dio = dioApi.Dio();
+    String addHistoryApi =
+        'http://sit.thonburi-u.ac.th/phpApi/checkhistory.php?isAdd=true&user_id=${userId.toString()}&content_id=${conid}';
+    try {
+      var response = await dio.get(addHistoryApi);
+      var bodys = convert.json.decode(response.data.toString());
+      log('resCheckhistory == ${bodys}');
+      if (bodys == null) {
+        print('ไม่เคยดู');
+        addHistory(contentModel: conid);
+      } else {
+        for (var map in bodys) {
+          HistoryModel historyModel = HistoryModel.fromJson(map);
+          if (userId == historyModel.contentId &&
+              conid == historyModel.contentId) {
+            print('มีข้อมูลแล้ว');
+          } 
+        }
+      }
+    } catch (e) {}
+  }
+
+  void addHistory({required contentModel}) async {
+    // String conid = contentModel.id;
+    var dio = dioApi.Dio();
+    String addHistoryApi =
+        'http://sit.thonburi-u.ac.th/phpApi/history.php?isAdd=true&user_id=${userId.toString()}&content_id=${contentModel}';
+    try {
+      var response = await dio.get(addHistoryApi);
+      var bodys = convert.json.decode(response.data.toString());
+      print('res add History == ${bodys}');
+    } catch (e) {}
   }
 }
 

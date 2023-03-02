@@ -9,12 +9,14 @@ import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart' as dioApi hide FormData;
 
 class SigninApi {
-    logintoApp(data, urllogin) async {
-      var fulldata = phpApi + urllogin;
+  static Future<dioApi.Response>  logintoApp(data) async {
+    
+     var urls = "http://10.0.2.2/deafapp/phpapi/loginuser.php";
+     
 
       var dio = dioApi.Dio();
 
-      return await dio.post(fulldata);
+      return await dio.post(urls);
   }
 
   }

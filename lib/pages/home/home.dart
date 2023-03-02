@@ -1,16 +1,26 @@
+import 'dart:io';
+
 import 'package:app_deaf/pages/coures.dart';
 import 'package:app_deaf/routers.dart';
-import 'package:app_deaf/routers.dart';
+
 import 'package:app_deaf/utils/app_controller.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomaPage extends StatefulWidget {
-  const HomaPage({super.key});
-
+  const HomaPage({    Key? key,
+   
+  }) : super(key: key);
   @override
   State<HomaPage> createState() => _HomaPageState();
+}
+
+Future<Null> logOut() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.clear();
+  exit(0);
 }
 
 class _HomaPageState extends State<HomaPage> {
@@ -36,6 +46,9 @@ class _HomaPageState extends State<HomaPage> {
                 appController.startLearn.value ? 'หัวข้อเรียน' : "หน้าแรก",
                 style: TextStyle(color: Colors.black),
               ),
+              actions: <Widget>[
+                IconButton(onPressed: () => logOut(),tooltip: 'ออกจากระบบ' ,icon: Icon(Icons.exit_to_app))
+              ],
             ),
 
             body: appController.startLearn.value ? CouresPage() : CurrendHome(),

@@ -16,12 +16,11 @@ import 'package:http/http.dart' as http;
 
 import 'package:dio/dio.dart' as dioApi hide FormData;
 import 'package:dio/src/form_data.dart' as dioFormdata;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfliePage extends StatefulWidget {
-  final String id;
   const ProfliePage({
     Key? key,
-    required this.id,
     List<ProfileModel>? profileModel,
   }) : super(key: key);
 
@@ -36,44 +35,51 @@ class _ProfliePageState extends State<ProfliePage> {
   Future<List<ProfileModel>>? futureProfile;
 
   var index;
-
-  Future<List<ProfileModel>> getProfile() async {
-    var dio = dioApi.Dio();
-    //var data = widget.id.toString();
-    // var getid = data;
-    //print(data.runtimeType);
-    var urlApi =
-        "http://10.0.2.2/deafapp/phpapi/getProfileWhereUser.php?id=${widget.id}";
-    print(urlApi);
-    //content.dart response = await dio.get(urlApi);
-    var response = await dio.get(urlApi);
-    var bodys = convert.json.decode(response.data.toString());
-    print(bodys);
-    List<dynamic> result = bodys[2];
-    print(result.runtimeType);
-    // add result to model name LoginModel
-    List<ProfileModel> profile =
-        result.map((e) => ProfileModel.fromJson(e)).toList();
-
-    print(bodys[2]);
-
-    print(profile.toString());
-
-    for (var model in profile) {
-      print("id: ${model.id}");
-      print("user_name: ${model.userName}");
-      print("passwords: ${model.passwords}");
-      print("images: ${model.images}");
-    }
-    return profile;
-  }
-
+  String nameUser = '';
+  // กำหนดค่าเริ่มต้น สำหรับ navbar ในการแสดง wiggle หน้าแรก 0 คือ HomePage
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    futureProfile = getProfile();
+    findUser();
   }
+
+  Future<Null> findUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      nameUser = preferences.getString('userName')!;
+    });
+  }
+  // Future<List<ProfileModel>> getProfile() async {
+  //   var dio = dioApi.Dio();
+  //   //var data = widget.id.toString();
+  //   // var getid = data;
+  //   //print(data.runtimeType);
+  //   // var urlApi =
+  //   //     "http://10.0.2.2/deafapp/phpapi/getProfileWhereUser.php?id=${widget.id}";
+  //   // print(urlApi);
+  //   //content.dart response = await dio.get(urlApi);
+  //   // var response = await dio.get(urlApi);
+  //   // var bodys = convert.json.decode(response.data.toString());
+  //   // print(bodys);
+  //   // List<dynamic> result = bodys[2];
+  //   // print(result.runtimeType);
+  //   // // add result to model name LoginModel
+  //   // List<ProfileModel> profile =
+  //   //     result.map((e) => ProfileModel.fromJson(e)).toList();
+
+  //   // print(bodys[2]);
+
+  //   // print(profile.toString());
+
+  //   // for (var model in profile) {
+  //   //   print("id: ${model.id}");
+  //   //   print("user_name: ${model.userName}");
+  //   //   print("passwords: ${model.passwords}");
+  //   //   print("images: ${model.images}");
+  //   // }
+  //   // return profile;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -96,153 +102,132 @@ class _ProfliePageState extends State<ProfliePage> {
         ),
 
         //body
-        body: FutureBuilder<List<ProfileModel>>(
-            future: futureProfile!,
-            builder: (BuildContext context,
-                AsyncSnapshot<List<ProfileModel>> snapshot) {
-              if (snapshot.hasData) {
-                final profileData = snapshot.data;
-                return Center(
-                  child: ListView(children: [
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 16, top: 25, right: 16),
-                      child: Text(
-                        "โปรไฟล์ของคุณ",
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Center(
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: 130,
-                            height: 130,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 4,
-                                  color: Theme.of(context)
-                                      .scaffoldBackgroundColor),
-                              boxShadow: [
-                                BoxShadow(
-                                    spreadRadius: 2,
-                                    blurRadius: 10,
-                                    color: Colors.black.withOpacity(0.1),
-                                    offset: Offset(0, 10))
-                              ],
-                              shape: BoxShape.circle,
-                              // image: DecorationImage(
-                              //     fit: BoxFit.cover,
-                              //     image: file == null ? AssetImage('assets/images/logo.jpg') : Image.file(file)
+        body: Center(
+          child: ListView(children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
+              child: Text(
+                "โปรไฟล์ของคุณ",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Center(
+              child: Stack(
+                children: [
+                  Container(
+                    width: 130,
+                    height: 130,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          width: 4,
+                          color: Theme.of(context).scaffoldBackgroundColor),
+                      boxShadow: [
+                        BoxShadow(
+                            spreadRadius: 2,
+                            blurRadius: 10,
+                            color: Colors.black.withOpacity(0.1),
+                            offset: Offset(0, 10))
+                      ],
+                      shape: BoxShape.circle,
+                      // image: DecorationImage(
+                      //     fit: BoxFit.cover,
+                      //     image: file == null ? AssetImage('assets/images/logo.jpg') : Image.file(file)
 
-                              //     )
-                            ),
+                      //     )
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            width: 4,
+                            color: Theme.of(context).scaffoldBackgroundColor,
                           ),
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: Container(
-                                height: 40,
-                                width: 40,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    width: 4,
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor,
-                                  ),
-                                  color: Colors.green,
-                                ),
-                                child: InkWell(
-                                  onTap: () => chooseImage(ImageSource.camera),
-                                  child: Icon(
-                                    // icon: Icon(
-                                    //   Icons.edit,
-                                    // ),
-                                    // onPressed: () => chooseImage(ImageSource.camera),
-                                    Icons.edit,
-                                    color: Colors.white,
-                                  ),
-                                )),
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 35,
-                    ),
-                    // Text
-                    Center(
-                      child: Text(
-                        "ชื่อของคุณ",
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    // การเรียก ข้อมูล จาก snapshot ออกมาแสดง
-                    Center(
-                      child: Text(
-                        snapshot.data![0].userName.toString(),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 100,
-                    ),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF277BC0),
-                          shape: const StadiumBorder(),
-
-                          minimumSize: Size(120, 50), // background
-
-                          // foreground
+                          color: Colors.green,
                         ),
-                        onPressed: () {
-                          print(",${widget.id}");
-                          _handleCilkResetPass(
-                            // ใส่ [0] แทน [index] 
-                              profileModel: snapshot.data![0]);
-                        },
-                        child: Text(
-                          'เปลี่ยนรหัสผ่าน',
-                          style: TextStyle(
-                              fontSize: 20.0, fontWeight: FontWeight.bold),
-                        ))
+                        child: InkWell(
+                          onTap: () => chooseImage(ImageSource.camera),
+                          child: Icon(
+                            // icon: Icon(
+                            //   Icons.edit,
+                            // ),
+                            // onPressed: () => chooseImage(ImageSource.camera),
+                            Icons.edit,
+                            color: Colors.white,
+                          ),
+                        )),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 35,
+            ),
+            // Text
+            Center(
+              child: Text(
+                "ชื่อของคุณ",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+            ),
+            // การเรียก ข้อมูล จาก snapshot ออกมาแสดง
+            Center(
+              child: Text('======${nameUser.toString()}========'),
+            ),
+            SizedBox(
+              height: 100,
+            ),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF277BC0),
+                  shape: const StadiumBorder(),
 
-                    // ... other widgets
-                  ]),
-                );
-              } else {
-                return CircularProgressIndicator();
-              }
-            }));
-  }
+                  minimumSize: Size(120, 50), // background
 
-  void _handleCilkResetPass({required ProfileModel profileModel}) {
-    //
-    print(" at _handClickContent == > ${profileModel.toJson()}");
+                  // foreground
+                ),
+                onPressed: () {},
+                child: Text(
+                  'เปลี่ยนรหัสผ่าน',
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                ))
 
-    Get.to(ResetPasswordPage(
-      profileModel: profileModel,
-    ));
-    //  Navigator.pushNamed(context, AppRoute.contents);
-    // Navigator.pushNamed(context, AppRoute.navbars);
-  }
-
-  Future<Null> chooseImage(ImageSource imageSource) async {
-    try {
-      var object = await ImagePicker.platform
-          .pickImage(source: imageSource, maxHeight: 800.0, maxWidth: 800.0);
-
-      setState(() {
-        var file = object;
-      });
-    } catch (e) {
-      print("Error is:,${e}");
-    }
+            // ... other widgets
+          ]),
+        ));
   }
 }
+
+void _handleCilkResetPass({required ProfileModel profileModel}) {
+  //
+  print(" at _handClickContent == > ${profileModel.toJson()}");
+
+  Get.to(ResetPasswordPage(
+    profileModel: profileModel,
+  ));
+  //  Navigator.pushNamed(context, AppRoute.contents);
+  // Navigator.pushNamed(context, AppRoute.navbars);
+}
+
+Future<Null> chooseImage(ImageSource imageSource) async {
+  try {
+    var object = await ImagePicker.platform
+        .pickImage(source: imageSource, maxHeight: 800.0, maxWidth: 800.0);
+
+    // setState(() {
+    //   var file = object;
+    // });
+  } catch (e) {
+    print("Error is:,${e}");
+  }
+}
+
+

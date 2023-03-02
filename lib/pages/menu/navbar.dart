@@ -12,29 +12,37 @@ import 'package:app_deaf/pages/home/home.dart';
 import 'package:app_deaf/pages/proflie.dart';
 import 'package:app_deaf/routers.dart';
 import 'package:app_deaf/utils/app_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NavbarPage extends StatefulWidget {
-  const NavbarPage({
-    Key? key,
-    required this.id,
+  const NavbarPage({    Key? key,
    
   }) : super(key: key);
-  final String id;
- 
- 
   @override
   State<NavbarPage> createState() => _NavbarPageState();
 }
 
 class _NavbarPageState extends State<NavbarPage> {
   int currentIndex = 0;
-
+  String nameUser = '';
   // กำหนดค่าเริ่มต้น สำหรับ navbar ในการแสดง wiggle หน้าแรก 0 คือ HomePage
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    // findUser();
   }
+
+  // Future<Null> findUser() async {
+  //   try {
+  //     SharedPreferences preferences = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     nameUser = preferences.getString('userName')!;
+  //   });
+  //   } catch (e) {
+
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +57,8 @@ class _NavbarPageState extends State<NavbarPage> {
                   // สำหรับ แสดง หน้าต่างๆ
                   HomaPage(),
                   CouresPage(),
-                  HistoryPage(id: widget.id,),
-                  ProfliePage(
-                    id: widget.id,
-                  ),
+                  HistoryPage(),
+                  ProfliePage()
                 ],
               ),
               // btn
@@ -60,8 +66,8 @@ class _NavbarPageState extends State<NavbarPage> {
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
                 backgroundColor: Color(0xFFFFB200), // สีพื้นหลัง navbar
-                selectedItemColor: Color.fromARGB(255, 0, 0, 0), // สีของ text
-                unselectedItemColor: Colors.black87,
+                selectedItemColor: Color.fromARGB(255, 255, 255, 255), // สีของ text
+                unselectedItemColor: Color.fromARGB(221, 0, 0, 0),
                 iconSize: 40.0, // ขนาดicon
                 selectedFontSize: 20, //-ขนาด ข้อความ
                 // code for change wiggle in navbar
@@ -69,8 +75,7 @@ class _NavbarPageState extends State<NavbarPage> {
                 onTap: ((value) {
                   setState(() {
                     currentIndex = value;
-
-                    print("${widget.id}");
+                    print("หน้า");
                   });
                 }),
                 /////////////////////
