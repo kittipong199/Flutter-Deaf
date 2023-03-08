@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'dart:convert' as convert;
+import 'package:app_deaf/controller/image_controller.dart';
 import 'package:app_deaf/models/profileModel.dart';
 import 'package:app_deaf/models/signinModel.dart';
 import 'package:app_deaf/pages/menu/navbar.dart';
@@ -11,8 +12,6 @@ import 'package:app_deaf/service/singinApi.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
-
-import 'package:http/http.dart' as http;
 
 import 'package:dio/dio.dart' as dioApi hide FormData;
 import 'package:dio/src/form_data.dart' as dioFormdata;
@@ -30,8 +29,8 @@ class ProfliePage extends StatefulWidget {
 
 class _ProfliePageState extends State<ProfliePage> {
   final ImagePicker _imagePicker = ImagePicker();
-
-  final file = File;
+  var imageController = Get.put(ImageController());
+  File? file;
   Future<List<ProfileModel>>? futureProfile;
 
   var index;
@@ -50,36 +49,93 @@ class _ProfliePageState extends State<ProfliePage> {
       nameUser = preferences.getString('userName')!;
     });
   }
-  // Future<List<ProfileModel>> getProfile() async {
-  //   var dio = dioApi.Dio();
-  //   //var data = widget.id.toString();
-  //   // var getid = data;
-  //   //print(data.runtimeType);
-  //   // var urlApi =
-  //   //     "http://10.0.2.2/deafapp/phpapi/getProfileWhereUser.php?id=${widget.id}";
-  //   // print(urlApi);
-  //   //content.dart response = await dio.get(urlApi);
-  //   // var response = await dio.get(urlApi);
-  //   // var bodys = convert.json.decode(response.data.toString());
-  //   // print(bodys);
-  //   // List<dynamic> result = bodys[2];
-  //   // print(result.runtimeType);
-  //   // // add result to model name LoginModel
-  //   // List<ProfileModel> profile =
-  //   //     result.map((e) => ProfileModel.fromJson(e)).toList();
 
-  //   // print(bodys[2]);
+  Future<Null> chooseImage(ImageSource imageSource) async {
+    print('test Image camera');
+    try {
+      var object = await ImagePicker()
+          .pickImage(source: imageSource, maxHeight: 800.0, maxWidth: 800.0);
 
-  //   // print(profile.toString());
+      //_imagePicker.pickImage(source: imageSource, maxHeight: 800.0, maxWidth: 800.0);
+      setState(() {
+        file = File( object!.path.toString());
+        // file = object.path.toString();
+        print('file ${file}');
+      });
+    } catch (e) {
+      print("Error is:,${e}");
+    }
+  }
 
-  //   // for (var model in profile) {
-  //   //   print("id: ${model.id}");
-  //   //   print("user_name: ${model.userName}");
-  //   //   print("passwords: ${model.passwords}");
-  //   //   print("images: ${model.images}");
-  //   // }
-  //   // return profile;
-  // }
+  Widget showButtom() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        Positioned(
+          bottom: 0,
+          right: 10,
+          child: Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  width: 4,
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                ),
+                color: Colors.green,
+              ),
+              child: InkWell(
+                onTap: () async {
+                  await chooseImage(ImageSource.gallery);
+                },
+                child: Icon(
+                  Icons.add_photo_alternate,
+                  color: Colors.white,
+                ),
+              )),
+        ),
+        Container(
+          width: 150.0,
+          child: file == null
+              ? Image.asset('assets/images/logodeaf.jpg')
+              : Image.file(file!),
+        ),
+        Positioned(
+          bottom: 0,
+          right: 120,
+          child: Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  width: 4,
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                ),
+                color: Color.fromARGB(255, 55, 128, 207),
+              ),
+              child: InkWell(
+                onTap: () {
+                  chooseImage(ImageSource.camera);
+                },
+                child: Icon(
+                  Icons.add_a_photo_outlined,
+                  color: Colors.white,
+                ),
+              )),
+        )
+      ],
+    );
+  }
+
+  @override
+  Widget showImage() {
+    return Container(
+      width: 250.0,
+      child: file == null ? Image.asset('images/logo.pag') : Image.file(file!),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,60 +170,20 @@ class _ProfliePageState extends State<ProfliePage> {
             SizedBox(
               height: 15,
             ),
-            Center(
-              child: Stack(
-                children: [
-                  Container(
-                    width: 130,
-                    height: 130,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 4,
-                          color: Theme.of(context).scaffoldBackgroundColor),
-                      boxShadow: [
-                        BoxShadow(
-                            spreadRadius: 2,
-                            blurRadius: 10,
-                            color: Colors.black.withOpacity(0.1),
-                            offset: Offset(0, 10))
-                      ],
-                      shape: BoxShape.circle,
-                      // image: DecorationImage(
-                      //     fit: BoxFit.cover,
-                      //     image: file == null ? AssetImage('assets/images/logo.jpg') : Image.file(file)
+            // Image
 
-                      //     )
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            width: 4,
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                          ),
-                          color: Colors.green,
-                        ),
-                        child: InkWell(
-                          onTap: () => chooseImage(ImageSource.camera),
-                          child: Icon(
-                            // icon: Icon(
-                            //   Icons.edit,
-                            // ),
-                            // onPressed: () => chooseImage(ImageSource.camera),
-                            Icons.edit,
-                            color: Colors.white,
-                          ),
-                        )),
-                  )
+            Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // input Widget
+
+                  showButtom(),
                 ],
               ),
             ),
+            // end Image
             SizedBox(
               height: 35,
             ),
@@ -180,17 +196,17 @@ class _ProfliePageState extends State<ProfliePage> {
             ),
             // การเรียก ข้อมูล จาก snapshot ออกมาแสดง
             Center(
-              child: Text('======${nameUser.toString()}========'),
+              child: Text('${nameUser.toString()}'),
             ),
             SizedBox(
-              height: 100,
+              height: 70,
             ),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF277BC0),
                   shape: const StadiumBorder(),
 
-                  minimumSize: Size(120, 50), // background
+                  minimumSize: Size(120, 60), // background
 
                   // foreground
                 ),
@@ -216,18 +232,3 @@ void _handleCilkResetPass({required ProfileModel profileModel}) {
   //  Navigator.pushNamed(context, AppRoute.contents);
   // Navigator.pushNamed(context, AppRoute.navbars);
 }
-
-Future<Null> chooseImage(ImageSource imageSource) async {
-  try {
-    var object = await ImagePicker.platform
-        .pickImage(source: imageSource, maxHeight: 800.0, maxWidth: 800.0);
-
-    // setState(() {
-    //   var file = object;
-    // });
-  } catch (e) {
-    print("Error is:,${e}");
-  }
-}
-
-

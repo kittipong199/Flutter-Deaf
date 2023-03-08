@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:app_deaf/pages/coures.dart';
+import 'package:app_deaf/pages/signin_signup/signout.dart';
 import 'package:app_deaf/routers.dart';
 
 import 'package:app_deaf/utils/app_controller.dart';
@@ -47,7 +48,7 @@ class _HomaPageState extends State<HomaPage> {
                 style: TextStyle(color: Colors.black),
               ),
               actions: <Widget>[
-                IconButton(onPressed: () => logOut(),tooltip: 'ออกจากระบบ' ,icon: Icon(Icons.exit_to_app))
+                IconButton(onPressed: () => signOutPage(context),tooltip: 'ออกจากระบบ' ,icon: Icon(Icons.power_settings_new_outlined))
               ],
             ),
 
