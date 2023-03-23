@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:convert' as convert;
 import 'package:app_deaf/controller/image_controller.dart';
@@ -58,7 +59,7 @@ class _ProfliePageState extends State<ProfliePage> {
 
       //_imagePicker.pickImage(source: imageSource, maxHeight: 800.0, maxWidth: 800.0);
       setState(() {
-        file = File( object!.path.toString());
+        file = File(object!.path.toString());
         // file = object.path.toString();
         print('file ${file}');
       });
@@ -160,13 +161,7 @@ class _ProfliePageState extends State<ProfliePage> {
         //body
         body: Center(
           child: ListView(children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
-              child: Text(
-                "โปรไฟล์ของคุณ",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-              ),
-            ),
+         
             SizedBox(
               height: 15,
             ),
@@ -196,7 +191,7 @@ class _ProfliePageState extends State<ProfliePage> {
             ),
             // การเรียก ข้อมูล จาก snapshot ออกมาแสดง
             Center(
-              child: Text('${nameUser.toString()}'),
+              child: Text('${nameUser.toString()}',style: TextStyle(fontSize: 30),),
             ),
             SizedBox(
               height: 70,
@@ -205,16 +200,20 @@ class _ProfliePageState extends State<ProfliePage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF277BC0),
                   shape: const StadiumBorder(),
-
-                  minimumSize: Size(120, 60), // background
+                  //maximumSize: Size(80, 60), 
+                  // background
 
                   // foreground
                 ),
-                onPressed: () {},
+                
+                onPressed: () {
+                   _handleCilkResetPass();
+                },
                 child: Text(
                   'เปลี่ยนรหัสผ่าน',
                   style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                ))
+                )
+                )
 
             // ... other widgets
           ]),
@@ -222,13 +221,11 @@ class _ProfliePageState extends State<ProfliePage> {
   }
 }
 
-void _handleCilkResetPass({required ProfileModel profileModel}) {
+void _handleCilkResetPass() {
   //
-  print(" at _handClickContent == > ${profileModel.toJson()}");
+  print(" at _handClickContent == > ");
 
-  Get.to(ResetPasswordPage(
-    profileModel: profileModel,
-  ));
+  Get.to(ResetPasswordPage());
   //  Navigator.pushNamed(context, AppRoute.contents);
   // Navigator.pushNamed(context, AppRoute.navbars);
 }

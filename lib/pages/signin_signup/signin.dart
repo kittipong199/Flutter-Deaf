@@ -81,7 +81,7 @@ class _SignInPageState extends State<SignInPage> {
                               child: Text(
                                 "Sign in ",
                                 style: TextStyle(
-                                    fontSize: 20.0, color: Colors.black),
+                                    fontSize: 20.0, color: Color.fromARGB(255, 255, 255, 255)),
                               )),
                           TextButton(
                               onPressed: _toSignUp,
@@ -168,9 +168,13 @@ class _SignInPageState extends State<SignInPage> {
                             child: const Text(
                               "ล็อกอิน",
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0)),
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  fontSize: 20.0, 
+                                  fontWeight: FontWeight.bold),
+                                  ),
+                                  
                             ),
-                          ),
+                          
                         ],
                       ),
                     ),

@@ -22,7 +22,7 @@ class WidgetImageYoutube extends StatelessWidget {
     urlimage = 'https://img.youtube.com/vi/$urlimage/0.jpg';
 
     return Image.network(urlimage ??
-        'https://www.androidthai.in.th/fluttertraining/image/image.png',
+        'http://sit.thonburi-u.ac.th/phpApi/image/logodeaf.jpg',
         
         width: width,
         height: height,);

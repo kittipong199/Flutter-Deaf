@@ -1,20 +1,21 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert' as convert;
 
+import 'package:app_deaf/models/signinModel.dart';
 import 'package:app_deaf/pages/menu/navbar.dart';
 import 'package:app_deaf/pages/proflie.dart';
+import 'package:app_deaf/utils/normal_dialog.dart';
 import 'package:dio/dio.dart' as dioApi hide FormData;
 import 'package:dio/src/form_data.dart' as dioFormdata;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:app_deaf/models/profileModel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ResetPasswordPage extends StatefulWidget {
-  final ProfileModel profileModel;
   ResetPasswordPage({
     Key? key,
-    required this.profileModel,
     List<ProfileModel>? profileModel2,
   }) : super(key: key);
 
@@ -24,11 +25,19 @@ class ResetPasswordPage extends StatefulWidget {
 
 class _ResetPasswordPageState extends State<ResetPasswordPage> {
   late TextEditingController resetpassword = TextEditingController();
-
+  String userId = '';
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    findUser();
+  }
+
+  Future<Null> findUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      userId = preferences.getString('id')!;
+    });
   }
 
   @override
@@ -63,9 +72,14 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                       Container(
                         padding:
                             EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
-                        child: Text("ใส่ รหัสผ่านใหม่"),
+                        child: Text(
+                          "ใส่ รหัสผ่านใหม่",
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 13, 13, 13),
+                          ),
+                        ),
                       ),
-                      SizedBox(height: 64.0),
+                      SizedBox(height: 34.0),
                       Container(
                         width: (constraints.maxWidth > 412)
                             ? ((constraints.maxWidth * 0.5))
@@ -73,7 +87,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey.shade200),
-                            color: Colors.white,
+                            color: Color.fromARGB(255, 230, 198, 198),
                             borderRadius: BorderRadius.circular(6.0)),
                         child: TextFormField(
                           controller: resetpassword,
@@ -105,7 +119,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                           onPressed: () {
                             // place sign in function here
                             getProfile();
-                           
+                            Navigator.pop(context);
                           },
                         ),
                       ),
@@ -122,41 +136,30 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     );
   }
 
-  Future<List<ProfileModel>>? getProfile() async {
+  Future<Null> getProfile() async {
     var dio = dioApi.Dio();
-    //var data = widget.id.toString();
-    // var getid = data;
-    //print(data.runtimeType);
+
     var formData = resetpassword.text;
 
     var urlApi =
-        "http://sit.thonburi-u.ac.th/phpApi/resetPassword.php?isAdd=true&id=${widget.profileModel.id}&passwords=${formData.toString()}";
+        "http://sit.thonburi-u.ac.th/phpApi/resetPassword.php?isAdd=true&id=${userId.toString()}&passwords=${formData.toString()}";
 
     resetpassword.text = "";
-    
+
     print(urlApi);
     //content.dart response = await dio.get(urlApi);
     var response = await dio.get(urlApi);
     var bodys = convert.json.decode(response.data.toString());
+    print("ค่าจากการเปลี่ยนรหัสผ่าน ==== ${bodys.toString()}");
 
-    //List<dynamic> result = bodys[2];
-    //print(result.runtimeType);
-    // add result to model name LoginModel
-    var profile = bodys![2].map((e) => ProfileModel.fromJson(e)).toList();
+    // var profile = bodys![2].map((e) => ProfileModel.fromJson(e)).toList();
 
-    print(bodys);
-
-    print(bodys[2]);
-
-    print(profile.toString());
-
-    for (var model in profile) {
-      print("id: ${model.id}");
-      print("user_name: ${model.userName}");
-      print("passwords: ${model.passwords}");
-      print("images: ${model.images}");
-    }
-
-    return profile;
+    // for (var map in bodys) {
+    //   LoginModel loginModel = LoginModel.fromJson(map);
+    //   if (formData == loginModel.passwords) {
+    //     normalDialog(context, 'เปลี่ยนรหัสผ่าน เรียบร้อย');
+    //     Get.back();
+    //   } else {}
+    // }
   }
 }

@@ -29,7 +29,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      backgroundColor: Color.fromARGB(255, 15, 201, 126),
+      backgroundColor: Color(0xFFFFD218),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -54,10 +54,13 @@ class _SignUpPageState extends State<SignUpPage> {
                               child: Text(
                                 "Sign UP",
                                 style: TextStyle(
-                                    fontSize: 20.0, color: Colors.black),
+                                    fontSize: 20.0, color: Color.fromARGB(255, 248, 247, 247)),
                               ))
                         ],
                       ),
+                    ),
+                        const SizedBox(
+                      height: 30,
                     ),
 
                     // username
@@ -132,7 +135,9 @@ class _SignUpPageState extends State<SignUpPage> {
                             child: const Text(
                               "สมัครสมาชิก",
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0)),
+                                  color: Color.fromARGB(255, 10, 10, 10),
+                                  fontSize: 20.0, 
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                         ],

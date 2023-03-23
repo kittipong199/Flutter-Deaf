@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
+
 import 'package:app_deaf/models/historyModel.dart';
 import 'package:flutter/material.dart';
 
@@ -23,11 +25,13 @@ class _HistoryPageState extends State<HistoryPage> {
   bool? haveData;
   String userId = '';
   var futureHistory = <HistoryModel>[];
+  Timer? timer;
 
   @override
   void initState() {
     super.initState();
-    findUser();
+    
+    timer = Timer.periodic(Duration(seconds: 15), (Timer t) => findUser());
   }
 
   Future<Null> findUser() async {
