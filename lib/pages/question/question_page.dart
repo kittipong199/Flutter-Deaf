@@ -54,7 +54,7 @@ class _QuestionPageState extends State<QuestionPage> {
 
   Future<void> readQuestion() async {
     String UrlApi =
-        "https://www.androidthai.in.th/fluttertraining/getQuestionWhereIdCourseUng.php?isAdd=true&coure_id=${couresModel!.id}";
+        "http://sit.thonburi-u.ac.th/phpApi/getQuestionWhereIdCourseUng.php?isAdd=true&coure_id=${couresModel!.id}";
 
     await Dio().get(UrlApi).then((value) async {
       load = false;

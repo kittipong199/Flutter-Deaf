@@ -196,24 +196,28 @@ class _ProfliePageState extends State<ProfliePage> {
             SizedBox(
               height: 70,
             ),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF277BC0),
-                  shape: const StadiumBorder(),
-                  //maximumSize: Size(80, 60), 
-                  // background
-
-                  // foreground
-                ),
-                
-                onPressed: () {
-                   _handleCilkResetPass();
-                },
-                child: Text(
-                  'เปลี่ยนรหัสผ่าน',
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                )
-                )
+            Padding(
+              padding: const EdgeInsets.only(left: 50.0,right: 50.0),
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                   
+                    backgroundColor: Color(0xFF277BC0),
+                    shape: const StadiumBorder(),
+                    
+                    // background
+            
+                    // foreground
+                  ),
+                  
+                  onPressed: () {
+                     _handleCilkResetPass();
+                  },
+                  child: Text(
+                    'เปลี่ยนรหัสผ่าน',
+                    style: TextStyle(fontSize: 30.0, height: 2.2,fontWeight: FontWeight.bold),
+                  )
+                  ),
+            )
 
             // ... other widgets
           ]),
