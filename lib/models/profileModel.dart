@@ -35,15 +35,15 @@ class ProfileModel {
         "id": id,
         "user_name": userName,
         "passwords": passwords,
-        "images": images == null ? null : images,
+        "images": images,
       };
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'userName': userName,
+      'user_name': userName,
       'passwords': passwords,
-      'images': images ,
+      'images': images,
     };
   }
 
@@ -52,7 +52,7 @@ class ProfileModel {
       id: (map['id'] ?? '') as String,
       userName: (map['user_name'] ?? '') as String,
       passwords: (map['passwords'] ?? '') as String,
-      images: (map['image'] ?? '') as String,
+      images: (map['images'] ?? '') as String,
     );
   }
 }
