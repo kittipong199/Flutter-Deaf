@@ -17,19 +17,19 @@ import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart' as dioApi hide FormData;
 import 'package:dio/src/form_data.dart' as dioFormdata;
 
-class ProfliePage extends StatefulWidget {
+class ProfilePage extends StatefulWidget {
   final String id;
-  const ProfliePage({
+  const ProfilePage({
     Key? key,
     required this.id,
     List<ProfileModel>? profileModel,
   }) : super(key: key);
 
   @override
-  State<ProfliePage> createState() => _ProfliePageState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfliePageState extends State<ProfliePage> {
+class _ProfilePageState extends State<ProfilePage> {
   final ImagePicker _imagePicker = ImagePicker();
 
   final file = File;

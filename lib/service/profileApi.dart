@@ -21,7 +21,7 @@
 // Security
 // Insights
 // Settings
-// Flutter-Deaf/lib/pages/proflie.dart
+// Flutter-Deaf/lib/pages/profile.dart
 // @kittipong199
 // kittipong199 login done next is login to profile
 // Latest commit 8f9cb4d 4 days ago
@@ -36,18 +36,18 @@
 // import 'package:flutter/material.dart';
 // import 'package:image_picker/image_picker.dart';
 
-// class ProfliePage extends StatefulWidget {
+// class ProfilePage extends StatefulWidget {
 //   final String id;
-//   const ProfliePage({
+//   const ProfilePage({
 //     Key? key,
 //     required this.id,
 //   }) : super(key: key);
 
 //   @override
-//   State<ProfliePage> createState() => _ProfliePageState();
+//   State<ProfilePage> createState() => _ProfilePageState();
 // }
 
-// class _ProfliePageState extends State<ProfliePage> {
+// class _ProfilePageState extends State<ProfilePage> {
 //   final ImagePicker _imagePicker = ImagePicker();
 //   final file = File;
 
