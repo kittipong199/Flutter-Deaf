@@ -1,26 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert' as convert;
 
-import 'dart:developer';
-import 'dart:math';
-
 // import 'package:app_deaf/service/couresApi.dart';
 import 'package:app_deaf/models/signinModel.dart';
 import 'package:app_deaf/pages/menu/navbar.dart';
-import 'package:app_deaf/pages/proflie.dart';
 import 'package:app_deaf/routers.dart';
-import 'package:app_deaf/service/signUpApi.dart';
 import 'package:app_deaf/service/singinApi.dart';
 import 'package:app_deaf/themes/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:http/http.dart' as http;
-
-import 'package:dio/dio.dart' as dioApi hide FormData;
 import 'package:dio/src/form_data.dart' as dioFormdata;
-
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -56,56 +46,46 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   void _login() async {
-    var dio = dioApi.Dio();
-
-    //var urls ="http://10.0.2.2/deafapp/phpapi/getUserWhereUser.php?isAdd=true&user_name=${user_name.text}&passwords=${passwords.text}";
-
-    var urls = "http://10.0.2.2/deafapp/phpapi/loginuser.php";
-    print(urls);
+    var urls = '/loginuser.php';
     dioFormdata.FormData formdata = dioFormdata.FormData.fromMap({
       'user_name': user_name.text,
       'passwords': passwords.text,
     });
-    //var response = await SigninApi.logintoApp(formdata, urls);
-    var response = await dio.post(urls, data: formdata);
-    // response.obs.firstRebuild คือ การแปลง ข้อมูล ให้อยู่ในรูปแบบ ของ bool ทำให้
-    // user_name.text = "";
-    // passwords.text = "";
-    var bodys = convert.json.decode(response.data.toString());
 
-    List<dynamic> result = bodys[2];
-    // add result to model name LoginModel
-    List<LoginModel> loginUser =
-        result.map((e) => LoginModel.fromJson(e)).toList();
+    try {
+      var response = await SigninApi().logintoApp(formdata, urls);
+      var bodys = convert.json.decode(response.data.toString());
 
-    print(bodys[2]);
+      List<dynamic> result = bodys[2];
+      // add result to model name LoginModel
+      List<LoginModel> loginUser =
+          result.map((e) => LoginModel.fromJson(e)).toList();
 
-    print(loginUser.toString());
+      print(bodys[2]);
 
-    for (var model in loginUser) {
-      print("id: ${model.id}");
-      print("user_name: ${model.userName}");
-      print("passwords: ${model.passwords}");
-      print("images: ${model.images}");
+      print(loginUser.toString());
 
-  
-    }
-    // void nexttoHone({required LoginModel loginModel}) {
-
-    // }
-
-    if (bodys[0] == "Success") {
-      print("ok pass");
-
-      //Get.to(NavbarPage(id: id));
       for (var model in loginUser) {
-          if(model.id != null){
+        print("id: ${model.id}");
+        print("user_name: ${model.userName}");
+        print("passwords: ${model.passwords}");
+        print("images: ${model.images}");
+      }
+
+      if (bodys[0] == "Success") {
+        print("ok pass");
+
+        //Get.to(NavbarPage(id: id));
+        for (var model in loginUser) {
+          if (model.id != null) {
             Get.to(NavbarPage(id: model.id.toString()));
+          }
         }
-        }
-     
-    } else {
-      print("ยังเขียนไม่ถูกหาวิธ๊ใหม่");
+      } else {
+        print("ยังเขียนไม่ถูกหาวิธ๊ใหม่");
+      }
+    } catch (e) {
+      print('Login error: $e');
     }
   }
 
