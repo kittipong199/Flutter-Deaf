@@ -1,52 +1,19 @@
-import 'dart:convert';
-
-import 'dart:async';
-import 'package:app_deaf/models/ContentModel.dart';
-import 'package:app_deaf/models/signinModel.dart';
-
 import 'package:app_deaf/utils/constarts.dart';
-import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart' as dioApi hide FormData;
 
+/// API service for signing in.
 class SigninApi {
-    logintoApp(data, urllogin) async {
-      var fulldata = phpApi + urllogin;
+  SigninApi({dioApi.Dio? dio}) : _dio = dio ?? dioApi.Dio();
 
-      var dio = dioApi.Dio();
+  final dioApi.Dio _dio;
 
-      return await dio.post(fulldata);
+  /// Sends a login request to the backend and returns the [Response].
+  ///
+  /// [data] is forwarded to the request body and [urllogin] is appended to
+  /// the base [phpApi] URL.
+  Future<dioApi.Response> logintoApp(dynamic data, String urllogin) async {
+    final fulldata = phpApi + urllogin;
+    return _dio.post(fulldata, data: data);
   }
+}
 
-  }
-
-// อันเก่า
-  // static Future<List<LoginModel>> futureSigninApi() async {
-
-  var urls = "http://10.0.2.2/deafapp/phpapi/loginuser.php";
-  // String ursl = 'http://10.0.2.2/deafapp/phpapi/getUserWhereUser.php?isAdd=true&user_name=${loginModel.userName}&passwords=${loginModel.passwords}';
-
-  //print(urls);
-
-  //final response = await http.get(Uri.parse(ursl));
-
-  //
-
-  // อันใหม่
-  // _setHeaders() =>{
-  //   'Content-type': 'application/json',
-  //   'Accept': 'application/json'
-  // };
-  //   // register user 
-
-  //   postLogin(apiURL) async {
-
-  //      var fullURL = phpApi + apiURL;
-  //   return await http.post(Uri.parse(fullURL),
-     
-      
-  //     headers: _setHeaders()
-  //   );
-
-  // }
-
-//}

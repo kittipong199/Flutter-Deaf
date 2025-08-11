@@ -17,7 +17,11 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 
 class CouresPage extends StatefulWidget {
-  const CouresPage({super.key});
+  const CouresPage({super.key, Future<List<Coures>> Function()? fetchCoures})
+      : fetchCoures = fetchCoures ?? CouresApi.futureCouresApi,
+        super(key: key);
+
+  final Future<List<Coures>> Function() fetchCoures;
 
   @override
   State<CouresPage> createState() => _CouresPageState();
@@ -27,13 +31,12 @@ class _CouresPageState extends State<CouresPage> {
   late TextEditingController controller;
 
   Future<List<Coures>>? futureCoures;
-  
 
   // ทำงานก่อน เมื่อมีการ เปิด แอพ
   @override
   void initState() {
     super.initState();
-    futureCoures = CouresApi.futureCouresApi();
+    futureCoures = widget.fetchCoures();
     controller = TextEditingController();
   }
 /////////////
