@@ -3,7 +3,7 @@ import 'package:app_deaf/pages/coures.dart';
 import 'package:app_deaf/pages/history.dart';
 import 'package:app_deaf/pages/home/home.dart';
 import 'package:app_deaf/pages/menu/navbar.dart';
-import 'package:app_deaf/pages/proflie.dart';
+import 'package:app_deaf/pages/profile.dart';
 import 'package:app_deaf/pages/signin_signup/reset_password.dart';
 import 'package:app_deaf/pages/signin_signup/signin.dart';
 import 'package:app_deaf/pages/signin_signup/signup.dart';
@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 //   "/coures":(BuildContext context) => CouresPage(),
 //   // "/":(BuildContext context) => ContentPage(),
 //   "/history":(BuildContext context) => HistoryPage(),
-//   "/profile":(BuildContext context) => ProfliePage(),
+//   "/profile":(BuildContext context) => ProfilePage(),
 
 // };
 

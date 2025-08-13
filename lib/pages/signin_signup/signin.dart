@@ -7,7 +7,7 @@ import 'dart:math';
 // import 'package:app_deaf/service/couresApi.dart';
 import 'package:app_deaf/models/signinModel.dart';
 import 'package:app_deaf/pages/menu/navbar.dart';
-import 'package:app_deaf/pages/proflie.dart';
+import 'package:app_deaf/pages/profile.dart';
 import 'package:app_deaf/routers.dart';
 import 'package:app_deaf/service/signUpApi.dart';
 import 'package:app_deaf/service/singinApi.dart';

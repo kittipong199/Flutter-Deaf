@@ -9,7 +9,7 @@ import 'package:app_deaf/models/signinModel.dart';
 import 'package:app_deaf/pages/coures.dart';
 import 'package:app_deaf/pages/history.dart';
 import 'package:app_deaf/pages/home/home.dart';
-import 'package:app_deaf/pages/proflie.dart';
+import 'package:app_deaf/pages/profile.dart';
 import 'package:app_deaf/routers.dart';
 import 'package:app_deaf/utils/app_controller.dart';
 
@@ -50,7 +50,7 @@ class _NavbarPageState extends State<NavbarPage> {
                   HomaPage(),
                   CouresPage(),
                   HistoryPage(id: widget.id,),
-                  ProfliePage(
+                  ProfilePage(
                     id: widget.id,
                   ),
                 ],
